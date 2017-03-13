@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,6 +33,8 @@ import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
+import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
+import com.guowei.draw.simpleweather.utils.TransformUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +69,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.navigationView)
     NavigationView navigationView;
     @BindView(R.id.template)
-    TextView tv_template;
+    TextView tvTemplate;
     @BindView(R.id.skycon)
-    TextView tv_skycon;
+    TextView tvSkycon;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tv_location)
     TextView tvLocation;
+    @BindView(R.id.iv_skycon)
+    ImageView ivSkycon;
+    @BindView(R.id.tv_wind)
+    TextView tvWind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager.setAdapter(new WeatherPagerAdapter(this));
         //设置监听appbar滑动
         setAppBarListener();
-        Glide.with(this).load(R.drawable.bg).into(ivBg);
+//        Glide.with(this).load(R.drawable.bg).into(ivBg);
         titleMenu.setOnClickListener(this);
         //百度地图初始化
         mLocationClient =new LocationClient(getApplicationContext());
@@ -261,12 +266,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onNext(CaiRealTimeBean caiRealTimeBean) {
-                CaiRealTimeBean.ResultBean result =caiRealTimeBean.getResult();
                 DebugUtil.debug("onNext: 获取到数据了\n"+caiRealTimeBean.toString());
-                tv_template.setText((int)result.getTemperature()+"");
-                tv_skycon.setText(result.getSkycon());
+                showData(caiRealTimeBean);
             }
 
         });
+    }
+    private void showData(CaiRealTimeBean realTimeBean){
+        CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
+        tvTemplate.setText((int)result.getTemperature()+"");
+        String skycon = TransformUtils.transformSkycon(result.getSkycon());
+        tvSkycon.setText(skycon);
+        String windDirection = TransformUtils.transformDirection(
+                result.getWind().getDirection());
+        String windSpeed = TransformUtils.transformSpeed(result.getWind().getSpeed());
+        tvWind.setText(windDirection+"  "+windSpeed);
+        int skyconIcon = TransformUtils.transformIcon(result.getSkycon());
+        ImageLoadUtil.displayPicFromLocation(skyconIcon,ivSkycon);
     }
 }

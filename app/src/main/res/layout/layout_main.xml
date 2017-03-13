@@ -50,11 +50,11 @@
                             android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
                             android:gravity="center"
-                            android:text="深圳"
                             android:textSize="20sp"
-                            android:theme="@style/whiteFont" />
+                            android:theme="@style/whiteFont"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true" />
                     </RelativeLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -71,7 +71,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="80sp"
-                        android:text="25"
                         android:theme="@style/whiteFont" />
 
                     <TextView
@@ -83,13 +82,28 @@
                         android:textSize="20sp"
                         android:theme="@style/whiteFont" />
 
+                    <ImageView
+                        android:layout_below="@id/template"
+                        android:id="@+id/iv_skycon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp" />
                     <TextView
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
                         android:id="@+id/skycon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/template"
-                        android:layout_marginLeft="16dp"
+                        android:layout_toRightOf="@id/iv_skycon"
+                        android:layout_alignBottom="@id/iv_skycon"
                         android:theme="@style/whiteFont" />
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/tv_wind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/skycon"
+                        />
                 </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
 
