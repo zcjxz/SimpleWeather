@@ -5,6 +5,11 @@ import java.util.List;
 
 public class CaiRealTimeBean {
 
+    @Override
+    public String toString() {
+        return status+"\n"+server_time;
+    }
+
     /**
      * status : ok
      * lang : zh_CN

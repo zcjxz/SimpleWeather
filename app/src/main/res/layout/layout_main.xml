@@ -1,87 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
-            <ImageView
-                android:id="@+id/iv_bg"
-                android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <RelativeLayout
-                android:id="@+id/rl_template"
-                android:layout_gravity="bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-                <TextView
-                    app:theme="@style/whiteFont"
-                    android:textSize="80sp"
-                    android:id="@+id/template"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="19"/>
-                <TextView
-                    app:theme="@style/whiteFont"
-                    android:text="o"
-                    android:textSize="20sp"
-                    android:layout_toRightOf="@id/template"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    app:theme="@style/whiteFont"
-                    android:layout_marginLeft="16dp"
-                    android:text="晴"
-                    android:layout_below="@id/template"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                app:layout_collapseMode="pin"
-                android:layout_width="match_parent"
-                app:contentInsetStart="0dp"
-                android:layout_height="?attr/actionBarSize">
-                <RelativeLayout
+                android:layout_height="300dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:id="@+id/iv_bg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/title_menu"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/title_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:padding="16dp"
+                            android:src="@drawable/titlebar_menu" />
+
+                        <TextView
+                            android:id="@+id/tv_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="深圳"
+                            android:textSize="20sp"
+                            android:theme="@style/whiteFont" />
+                    </RelativeLayout>
+                </android.support.v7.widget.Toolbar>
+
+                <RelativeLayout
+                    android:id="@+id/rl_template"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/template"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/titlebar_menu"
-                        android:layout_centerVertical="true"
-                        android:padding="16dp"/>
+                        android:textSize="80sp"
+                        android:text="25"
+                        android:theme="@style/whiteFont" />
+
                     <TextView
-                        app:theme="@style/whiteFont"
-                        android:textSize="20sp"
-                        android:gravity="center"
-                        android:text="深圳"
-                        android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/template"
+                        android:text="o"
+                        android:padding="8dp"
+                        android:textSize="20sp"
+                        android:theme="@style/whiteFont" />
+
+                    <TextView
+                        android:id="@+id/skycon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/template"
+                        android:layout_marginLeft="16dp"
+                        android:theme="@style/whiteFont" />
                 </RelativeLayout>
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
-    </android.support.design.widget.AppBarLayout>
-    <android.support.v4.view.ViewPager
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+        </android.support.design.widget.AppBarLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
