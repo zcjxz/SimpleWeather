@@ -28,9 +28,10 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.bumptech.glide.Glide;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
+import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
+import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CollapsingToolbarLayoutState state;
     public LocationClient mLocationClient =null;
     public BDLocationListener mlistener=new MyLocationListener();
+    private ArrayList<WeatherFragment> forecastList=new ArrayList<>();
 
     @BindView(R.id.viewpager)
     ViewPager viewPager;
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawerLayout;
     @BindView(R.id.navigationView)
     NavigationView navigationView;
-    @BindView(R.id.template)
+    @BindView(R.id.tv_template)
     TextView tvTemplate;
     @BindView(R.id.skycon)
     TextView tvSkycon;
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView ivSkycon;
     @BindView(R.id.tv_wind)
     TextView tvWind;
+    private WeatherPagerAdapter viewPagerAdapter;
+    private WeatherFragment locationFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (supportActionBar!=null){
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
-        viewPager.setAdapter(new WeatherPagerAdapter(this));
+        locationFragment = new WeatherFragment();
+        Bundle localBundle = new Bundle();
+        localBundle.putBoolean("isLocal",true);
+        locationFragment.setArguments(localBundle);
+        forecastList.add(locationFragment);
+        Bundle cityBundle = new Bundle();
+        cityBundle.putBoolean("isLocal",false);
+        cityBundle.putString("city","汕头");
+        WeatherFragment cityFragment = new WeatherFragment();
+        cityFragment.setArguments(cityBundle);
+        forecastList.add(cityFragment);
+        viewPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(),forecastList);
+        viewPager.setAdapter(viewPagerAdapter);
         //设置监听appbar滑动
         setAppBarListener();
 //        Glide.with(this).load(R.drawable.bg).into(ivBg);
@@ -223,7 +240,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvLocation.setText(bdLocation.getStreet());
                 }
             });
-            requestWeather(longitude+"",latitude+"");
+            requestRealtimeWeather(longitude+"",latitude+"");
+            locationFragment.setLocation(longitude+"",latitude+"");
         }
 
         @Override
@@ -251,7 +269,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void requestWeather(String longitude,String latitude){
+    /**
+     * 获取实时天气
+     * @param longitude
+     * @param latitude
+     */
+    private void requestRealtimeWeather(String longitude, String latitude){
         HttpUtils.getInstance().getCaiRealTimeWeather(longitude + "", latitude + "", new Subscriber<CaiRealTimeBean>() {
 
             @Override
@@ -266,15 +289,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onNext(CaiRealTimeBean caiRealTimeBean) {
-                DebugUtil.debug("onNext: 获取到数据了\n"+caiRealTimeBean.toString());
-                showData(caiRealTimeBean);
+                DebugUtil.debug("onNext: 获取实时天气\n"+caiRealTimeBean.toString());
+                showToolbarData(caiRealTimeBean);
             }
 
         });
     }
-    private void showData(CaiRealTimeBean realTimeBean){
+
+
+    /**
+     * 显示toolbar数据
+     */
+    private void showToolbarData(CaiRealTimeBean realTimeBean){
+        DebugUtil.debug("显示toolbar数据");
         CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
-        tvTemplate.setText((int)result.getTemperature()+"");
+        //Toolbar上的天气概况
+        tvTemplate.setText((int)result.getTemperature()+"℃");
         String skycon = TransformUtils.transformSkycon(result.getSkycon());
         tvSkycon.setText(skycon);
         String windDirection = TransformUtils.transformDirection(

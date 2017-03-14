@@ -10,4 +10,7 @@
     <style name="whiteFont">
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="MyCardView">
+        <item name="android:layout_margin">8dp</item>
+    </style>
 </resources>

@@ -384,14 +384,14 @@ public class CaiForecastBean {
                  * datetime : 2017-03-13 11:00
                  */
 
-                private int value;
+                private double value;
                 private String datetime;
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -446,10 +446,10 @@ public class CaiForecastBean {
                  * datetime : 2017-03-13 11:00
                  */
 
-                private int value;
+                private double value;
                 private String datetime;
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
@@ -481,8 +481,8 @@ public class CaiForecastBean {
             private String description;
             private String datasource;
             private List<Double> probability;
-            private List<Integer> precipitation_2h;
-            private List<Integer> precipitation;
+            private List<Double> precipitation_2h;
+            private List<Double> precipitation;
 
             public String getStatus() {
                 return status;
@@ -516,19 +516,19 @@ public class CaiForecastBean {
                 this.probability = probability;
             }
 
-            public List<Integer> getPrecipitation_2h() {
+            public List<Double> getPrecipitation_2h() {
                 return precipitation_2h;
             }
 
-            public void setPrecipitation_2h(List<Integer> precipitation_2h) {
+            public void setPrecipitation_2h(List<Double> precipitation_2h) {
                 this.precipitation_2h = precipitation_2h;
             }
 
-            public List<Integer> getPrecipitation() {
+            public List<Double> getPrecipitation() {
                 return precipitation;
             }
 
-            public void setPrecipitation(List<Integer> precipitation) {
+            public void setPrecipitation(List<Double> precipitation) {
                 this.precipitation = precipitation;
             }
         }
@@ -797,7 +797,7 @@ public class CaiForecastBean {
                 private String date;
                 private double max;
                 private double avg;
-                private int min;
+                private double min;
 
                 public String getDate() {
                     return date;
@@ -823,7 +823,7 @@ public class CaiForecastBean {
                     this.avg = avg;
                 }
 
-                public int getMin() {
+                public double getMin() {
                     return min;
                 }
 
@@ -1155,9 +1155,9 @@ public class CaiForecastBean {
                  */
 
                 private String date;
-                private int max;
-                private int avg;
-                private int min;
+                private double max;
+                private double avg;
+                private double min;
 
                 public String getDate() {
                     return date;
@@ -1167,7 +1167,7 @@ public class CaiForecastBean {
                     this.date = date;
                 }
 
-                public int getMax() {
+                public double getMax() {
                     return max;
                 }
 
@@ -1175,7 +1175,7 @@ public class CaiForecastBean {
                     this.max = max;
                 }
 
-                public int getAvg() {
+                public double getAvg() {
                     return avg;
                 }
 
@@ -1183,7 +1183,7 @@ public class CaiForecastBean {
                     this.avg = avg;
                 }
 
-                public int getMin() {
+                public double getMin() {
                     return min;
                 }
 

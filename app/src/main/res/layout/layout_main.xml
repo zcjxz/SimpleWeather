@@ -67,23 +67,16 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/template"
+                        android:id="@+id/tv_template"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="80sp"
                         android:theme="@style/whiteFont" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/template"
-                        android:text="o"
-                        android:padding="8dp"
-                        android:textSize="20sp"
-                        android:theme="@style/whiteFont" />
+
 
                     <ImageView
-                        android:layout_below="@id/template"
+                        android:layout_below="@id/tv_template"
                         android:id="@+id/iv_skycon"
                         android:layout_width="32dp"
                         android:layout_height="32dp" />
@@ -93,7 +86,7 @@
                         android:id="@+id/skycon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/template"
+                        android:layout_below="@id/tv_template"
                         android:layout_toRightOf="@id/iv_skycon"
                         android:layout_alignBottom="@id/iv_skycon"
                         android:theme="@style/whiteFont" />

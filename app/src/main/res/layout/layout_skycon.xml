@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/skyconIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <LinearLayout
+        android:id="@+id/linear_temp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/temp_max" />
+
+        <TextView
+            android:id="@+id/temp_min"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/template"
+        android:layout_marginRight="8dp"
+        android:textSize="54sp"
+        android:layout_toLeftOf="@id/linear_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/pm25"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

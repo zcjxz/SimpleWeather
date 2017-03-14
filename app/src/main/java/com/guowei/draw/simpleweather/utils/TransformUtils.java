@@ -103,6 +103,11 @@ public class TransformUtils {
         return R.drawable.clear_day;
     }
 
+    /**
+     * 把天气概况转化为文字
+     * @param skycon
+     * @return
+     */
     public static String transformSkycon(String skycon){
         if (skycon.equals("CLEAR_DAY")){
             return "晴";
@@ -124,5 +129,26 @@ public class TransformUtils {
             return "雾";
         }
         return "晴";
+    }
+
+    /**
+     * 转化aqi为优良等级
+     * @param aqi
+     * @return
+     */
+    public static String transformAQI(double aqi){
+        if (aqi<=50){
+            return "优";
+        }else if (aqi<=100){
+            return "良";
+        }else if (aqi<=150){
+            return "轻度污染";
+        }else if (aqi<=200){
+            return "中度污染";
+        }else if (aqi<=300){
+            return "重度污染";
+        }else{
+            return "严重污染";
+        }
     }
 }

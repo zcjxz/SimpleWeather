@@ -5,19 +5,14 @@ import java.util.List;
 
 public class CaiRealTimeBean {
 
-    @Override
-    public String toString() {
-        return status+"\n"+server_time;
-    }
-
     /**
      * status : ok
      * lang : zh_CN
-     * server_time : 1443418222
+     * server_time : 1489455135
      * tzshift : 28800
-     * location : [25.1552,121.6544]
+     * location : [22.576861,113.927135]
      * unit : metric
-     * result : {"status":"ok","temperature":28,"skycon":"RAIN","pm25":11,"cloudrate":0.51,"humidity":0.92,"precipitation":{"nearest":{"status":"ok","distance":0.77,"intensity":0.3125},"local":{"status":"ok","intensity":0.2812,"datasource":"radar"}},"wind":{"direction":25.33,"speed":83.3}}
+     * result : {"status":"ok","temperature":20,"skycon":"PARTLY_CLOUDY_DAY","cloudrate":0.55,"aqi":64,"humidity":0.83,"pm25":40,"precipitation":{"nearest":{"status":"ok","distance":24.5,"intensity":0.1875},"local":{"status":"ok","intensity":0,"datasource":"radar"}},"wind":{"direction":44.71,"speed":17.7}}
      */
 
     private String status;
@@ -27,6 +22,11 @@ public class CaiRealTimeBean {
     private String unit;
     private ResultBean result;
     private List<Double> location;
+
+    @Override
+    public String toString() {
+        return status+"\n"+server_time;
+    }
 
     public String getStatus() {
         return status;
@@ -84,24 +84,27 @@ public class CaiRealTimeBean {
         this.location = location;
     }
 
+
     public static class ResultBean {
         /**
          * status : ok
-         * temperature : 28.0
-         * skycon : RAIN
-         * pm25 : 11
-         * cloudrate : 0.51
-         * humidity : 0.92
-         * precipitation : {"nearest":{"status":"ok","distance":0.77,"intensity":0.3125},"local":{"status":"ok","intensity":0.2812,"datasource":"radar"}}
-         * wind : {"direction":25.33,"speed":83.3}
+         * temperature : 20
+         * skycon : PARTLY_CLOUDY_DAY
+         * cloudrate : 0.55
+         * aqi : 64
+         * humidity : 0.83
+         * pm25 : 40
+         * precipitation : {"nearest":{"status":"ok","distance":24.5,"intensity":0.1875},"local":{"status":"ok","intensity":0,"datasource":"radar"}}
+         * wind : {"direction":44.71,"speed":17.7}
          */
 
         private String status;
-        private double temperature;
+        private int temperature;
         private String skycon;
-        private int pm25;
         private double cloudrate;
+        private int aqi;
         private double humidity;
+        private int pm25;
         private PrecipitationBean precipitation;
         private WindBean wind;
 
@@ -113,11 +116,11 @@ public class CaiRealTimeBean {
             this.status = status;
         }
 
-        public double getTemperature() {
+        public int getTemperature() {
             return temperature;
         }
 
-        public void setTemperature(double temperature) {
+        public void setTemperature(int temperature) {
             this.temperature = temperature;
         }
 
@@ -129,14 +132,6 @@ public class CaiRealTimeBean {
             this.skycon = skycon;
         }
 
-        public int getPm25() {
-            return pm25;
-        }
-
-        public void setPm25(int pm25) {
-            this.pm25 = pm25;
-        }
-
         public double getCloudrate() {
             return cloudrate;
         }
@@ -145,12 +140,28 @@ public class CaiRealTimeBean {
             this.cloudrate = cloudrate;
         }
 
+        public int getAqi() {
+            return aqi;
+        }
+
+        public void setAqi(int aqi) {
+            this.aqi = aqi;
+        }
+
         public double getHumidity() {
             return humidity;
         }
 
         public void setHumidity(double humidity) {
             this.humidity = humidity;
+        }
+
+        public int getPm25() {
+            return pm25;
+        }
+
+        public void setPm25(int pm25) {
+            this.pm25 = pm25;
         }
 
         public PrecipitationBean getPrecipitation() {
@@ -171,8 +182,8 @@ public class CaiRealTimeBean {
 
         public static class PrecipitationBean {
             /**
-             * nearest : {"status":"ok","distance":0.77,"intensity":0.3125}
-             * local : {"status":"ok","intensity":0.2812,"datasource":"radar"}
+             * nearest : {"status":"ok","distance":24.5,"intensity":0.1875}
+             * local : {"status":"ok","intensity":0,"datasource":"radar"}
              */
 
             private NearestBean nearest;
@@ -197,8 +208,8 @@ public class CaiRealTimeBean {
             public static class NearestBean {
                 /**
                  * status : ok
-                 * distance : 0.77
-                 * intensity : 0.3125
+                 * distance : 24.5
+                 * intensity : 0.1875
                  */
 
                 private String status;
@@ -233,12 +244,12 @@ public class CaiRealTimeBean {
             public static class LocalBean {
                 /**
                  * status : ok
-                 * intensity : 0.2812
+                 * intensity : 0
                  * datasource : radar
                  */
 
                 private String status;
-                private double intensity;
+                private int intensity;
                 private String datasource;
 
                 public String getStatus() {
@@ -249,11 +260,11 @@ public class CaiRealTimeBean {
                     this.status = status;
                 }
 
-                public double getIntensity() {
+                public int getIntensity() {
                     return intensity;
                 }
 
-                public void setIntensity(double intensity) {
+                public void setIntensity(int intensity) {
                     this.intensity = intensity;
                 }
 
@@ -269,8 +280,8 @@ public class CaiRealTimeBean {
 
         public static class WindBean {
             /**
-             * direction : 25.33
-             * speed : 83.3
+             * direction : 44.71
+             * speed : 17.7
              */
 
             private double direction;
