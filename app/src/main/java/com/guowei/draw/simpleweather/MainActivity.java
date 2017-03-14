@@ -29,7 +29,6 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
-import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.utils.DebugUtil;

@@ -2,7 +2,6 @@ package com.guowei.draw.simpleweather.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import com.guowei.draw.simpleweather.adapter.DailyAdapter;
 import com.guowei.draw.simpleweather.adapter.HourlyAdapter;
 import com.guowei.draw.simpleweather.base.BaseFragment;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
-import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
