@@ -29,10 +29,12 @@ public class DrawUtils {
     public int mWidth=weight*9;
     public int mHeight=weight*6;
     private Paint paint;
-    private SimpleDateFormat sdf;
+    private SimpleDateFormat sdfS;
     private Date date;
     private Paint pointPaint;
     private final Paint heightPaint;
+    private SimpleDateFormat sdfE;
+    private final SimpleDateFormat sdfH;
 
     public DrawUtils(){
         application = WeatherApplication.getApplication();
@@ -43,7 +45,12 @@ public class DrawUtils {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
         paint.setAntiAlias(true);
-        sdf = new SimpleDateFormat("ss");
+        //把时间格式化成秒
+        sdfS = new SimpleDateFormat("ss");
+        //把时间格式化成星期
+        sdfE = new SimpleDateFormat("EEE");
+        //把时间格式化成小时，分钟
+        sdfH = new SimpleDateFormat("HH:mm");
         date = new Date();
         mWidth =weightPx*9 +3*strokeWidth;
         mHeight = weightPx*6+2*strokeWidth;
@@ -70,8 +77,10 @@ public class DrawUtils {
         widgetManager = AppWidgetManager.getInstance(application);
         remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_widget);
         componentName = new ComponentName(application, MyWidgetProvider.class);
-        String time = sdf.format(date);
-        int second = Integer.parseInt(time);
+        String eFormat = sdfE.format(date);
+        String hourFormat = sdfH.format(date);
+        String secondFormat = sdfS.format(date);
+        int second = Integer.parseInt(secondFormat);
         Bitmap bitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         //画大圆
@@ -95,6 +104,7 @@ public class DrawUtils {
 //        canvas.drawCircle(6*weightPx+2*strokeWidth,strokeWidth+DensityUtil.dip2px(10),5,heightPaint);
         canvas.drawCircle(6*weightPx+2*strokeWidth,strokeWidth+DensityUtil.dip2px(10),5,pointPaint);
         canvas.restore();
+        remoteViews.setTextViewText(R.id.widget_time,eFormat+"\n"+hourFormat);
         remoteViews.setImageViewBitmap(R.id.clockImg, bitmap);
         widgetManager.updateAppWidget(componentName,remoteViews);
         canvas=null;
