@@ -1,6 +1,7 @@
 package com.guowei.draw.simpleweather;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (!permissionList.isEmpty()){
-            DebugUtil.debug("还未获取满权限");
             String[] permissions=permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(MainActivity.this,permissions,1);
         }else{
@@ -264,6 +264,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
             requestRealtimeWeather(longitude+"",latitude+"");
+            SharedPreferences sp=getSharedPreferences("local",MODE_PRIVATE);
+            sp.edit().putString("longitude",longitude+"").putString("latitude",latitude+"").commit();
             locationFragment.setLocation(bdLocation);
         }
 

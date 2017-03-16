@@ -6,6 +6,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.guowei.draw.simpleweather.C;
+import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.DrawUtils;
 
 import java.text.SimpleDateFormat;
@@ -47,8 +49,8 @@ public class ClockService extends Service{
 //        remoteViews.setTextViewText(R.id.widget_text,time);
 //        AppWidgetManager widgetManager = AppWidgetManager.getInstance(getApplication());
 //        widgetManager.updateAppWidget(new ComponentName(getApplication(),MyWidgetProvider.class),remoteViews);
-//        Log.i("zcj", "updateClock: -------");
-        this.sendBroadcast(new Intent("zcj"));
+//        DebugUtil.debug("发送广播----");
+        this.sendBroadcast(new Intent(C.UPDATE_CLOCK));
 //        Log.i("zcj", "updateClock");
 //        drawUtils.updateClock();
 //        new DrawUtils().updateClock();
@@ -57,8 +59,10 @@ public class ClockService extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
-        timer=null;
+        if (timer!=null){
+            timer.cancel();
+            timer=null;
+        }
         Log.i("zcj", "onDestroy: --------");
     }
 }

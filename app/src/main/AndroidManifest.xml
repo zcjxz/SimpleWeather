@@ -43,13 +43,15 @@
         <receiver android:name=".widget.MyWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="zcj"/>
+                <action android:name="com.guowei.clock.update"/>
+                <action android:name="com.guowei.weather.update"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget"/>
         </receiver>
         <service android:name=".widget.ClockService"/>
+        <service android:name=".widget.WeatherService"/>
     </application>
 
 </manifest>

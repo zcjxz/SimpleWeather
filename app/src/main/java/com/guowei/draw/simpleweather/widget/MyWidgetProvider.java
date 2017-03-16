@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import com.guowei.draw.simpleweather.C;
+import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.DrawUtils;
-
+import com.guowei.draw.simpleweather.utils.WeatherUtil;
 
 
 public class MyWidgetProvider extends AppWidgetProvider{
@@ -35,9 +37,10 @@ public class MyWidgetProvider extends AppWidgetProvider{
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-
+        DebugUtil.debug("onEnabled----");
         Log.i(TAG, "onEnabled: ");
         context.startService(new Intent(context,ClockService.class));
+        context.startService(new Intent(context,WeatherService.class));
     }
 
     @Override
@@ -45,20 +48,28 @@ public class MyWidgetProvider extends AppWidgetProvider{
         super.onDisabled(context);
         Log.i(TAG, "onDisabled: ");
         context.stopService(new Intent(context,ClockService.class));
+        context.stopService(new Intent(context,WeatherService.class));
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (action.equals("zcj")){
-//            Log.i(TAG, "onReceive: zcj");
+        if (action.equals(C.UPDATE_CLOCK)){
+//            DebugUtil.debug("收到广播");
 //            sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //            String time = sdf.format(new Date());
 //            RemoteViews remoteViews=new RemoteViews(context.getPackageName(),R.layout.layout_widget);
 //            remoteViews.setTextViewText(R.id.widget_text,time);
 //            ComponentName componentName = new ComponentName(context, MyWidgetProvider.class);
 //            AppWidgetManager.getInstance(context).updateAppWidget(componentName,remoteViews);
-            new DrawUtils().updateClock();
+            DrawUtils drawUtils = new DrawUtils();
+            drawUtils.updateClock();
+            drawUtils=null;
+        }else if (action.equals(C.UPDATE_WEATHER)){
+            DebugUtil.debug("收到更新天气广播");
+            WeatherUtil weatherUtil = new WeatherUtil();
+            weatherUtil.updateWeather();
+            weatherUtil=null;
         }
         super.onReceive(context, intent);
     }
