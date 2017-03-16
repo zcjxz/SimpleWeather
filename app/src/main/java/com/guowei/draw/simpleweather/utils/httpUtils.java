@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
 
 public class HttpUtils {
     public static final String CaiBaseUrl="https://api.caiyunapp.com/v2/";
-    public static final String caiKey ="TAkhjf8d1nlSlspN";
+    public static final String caiKey ="7sPviCtTxhQ1bcu9";
 
     public static final String hefengKey="369f85b879624fe3ba5d05a1b4037c7e";
     public static final String hefengBaseUrl="https://free-api.heweather.com/v5/";

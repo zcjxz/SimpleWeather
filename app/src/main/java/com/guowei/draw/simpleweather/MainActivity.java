@@ -253,10 +253,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentPosition.append("街道：").append(bdLocation.getStreet()).append("\n");
             currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
             DebugUtil.debug("onReceiveLocation: \n"+currentPosition);
-            StringBuilder sb=new StringBuilder();
-            sb.append("定位错误：");
 
-            DebugUtil.debug(sb.toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -278,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        DebugUtil.debug("正在动态获取权限");
         switch (requestCode){
             case 1:
                 if (grantResults.length>0){

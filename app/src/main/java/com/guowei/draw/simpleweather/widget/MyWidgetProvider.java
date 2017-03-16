@@ -51,7 +51,7 @@ public class MyWidgetProvider extends AppWidgetProvider{
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action.equals("zcj")){
-            Log.i(TAG, "onReceive: zcj");
+//            Log.i(TAG, "onReceive: zcj");
 //            sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //            String time = sdf.format(new Date());
 //            RemoteViews remoteViews=new RemoteViews(context.getPackageName(),R.layout.layout_widget);
