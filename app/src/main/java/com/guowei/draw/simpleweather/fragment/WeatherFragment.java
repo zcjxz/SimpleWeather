@@ -8,17 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.DailyAdapter;
 import com.guowei.draw.simpleweather.adapter.HourlyAdapter;
 import com.guowei.draw.simpleweather.base.BaseFragment;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
+import com.guowei.draw.simpleweather.bean.HefengSearchBean;
+import com.guowei.draw.simpleweather.bean.HefengSuggestionBean;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,10 +50,41 @@ public class WeatherFragment extends BaseFragment{
     RecyclerView rcHourly;
     @BindView(R.id.rc_daily)
     RecyclerView rcDaily;
+    //生活建议
+    @BindView(R.id.suggestion_contain)
+    LinearLayout suggestionContain;
+    @BindView(R.id.comfort)
+    TextView comfort;
+    @BindView(R.id.comfort_text)
+    TextView comfortText;
+    @BindView(R.id.clothing)
+    TextView clothing;
+    @BindView(R.id.clothing_text)
+    TextView clothingText;
+    @BindView(R.id.ultraviolet)
+    TextView ultraviolet;
+    @BindView(R.id.ultraviolet_text)
+    TextView ultravioletText;
+    @BindView(R.id.sports)
+    TextView sports;
+    @BindView(R.id.sports_text)
+    TextView sportsText;
+    @BindView(R.id.cold)
+    TextView cold;
+    @BindView(R.id.cold_text)
+    TextView coldText;
+    @BindView(R.id.travel)
+    TextView travel;
+    @BindView(R.id.travel_text)
+    TextView travelText;
+    @BindView(R.id.car_wash)
+    TextView carwash;
+    @BindView(R.id.car_wash_text)
+    TextView carwashText;
+
     private View view;
     private Bundle arguments;
-    public String longitude;
-    public String latitude;
+    public BDLocation location;
 
     public WeatherFragment(){
         super();
@@ -104,28 +141,134 @@ public class WeatherFragment extends BaseFragment{
         rcDaily.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void setLocation(String longitude,String latitude){
-        DebugUtil.debug("设置local");
-        this.longitude=longitude;
-        this.latitude=latitude;
-        refresh();
-    }
-
     @Override
     protected void lazyLoad() {
         DebugUtil.debug("lazyload");
         if (arguments.getBoolean("isLocal")){
+            DebugUtil.debug("请求当地天气");
             //请求当地天气
-            if (longitude!=null&latitude!=null){
-                requestForecast(longitude,latitude);
+            if (location!=null&&location.getCity()!=null){
+                DebugUtil.debug("请求天气预报");
+                requestForecast(location.getLongitude()+"",location.getLatitude()+"");
+                DebugUtil.debug("请求生活建议");
+                requestSuggestion();
             }
         }else{
             //请求城市经纬度
+            DebugUtil.debug("当前不是当地天气");
         }
     }
-    //请求天气预报
+
+    /**
+     * 设置位置信息
+     * @param local
+     */
+    public void setLocation(BDLocation local){
+        this.location=local;
+        refresh();
+    }
+
+    /**
+     * 请求生活建议
+     */
+    public void requestSuggestion(){
+        requestCity();
+    }
+
+    /**
+     * 通过城市id请求生活建议
+     * @param hefengCityId
+     */
+    private void requestSuggestionWithCity(String hefengCityId) {
+        HttpUtils.getInstance().getHefengSuggestion(hefengCityId, new Subscriber<HefengSuggestionBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                DebugUtil.debug("获取生活建议错误："+e.toString());
+            }
+
+            @Override
+            public void onNext(HefengSuggestionBean hefengSuggestionBean) {
+                showSuggestion(hefengSuggestionBean);
+            }
+        });
+    }
+
+    private void showSuggestion(HefengSuggestionBean hefengSuggestionBean) {
+        HefengSuggestionBean.HeWeather5Bean.SuggestionBean suggestions = hefengSuggestionBean.getHeWeather5().get(0).getSuggestion();
+        comfort.setText("舒适度   "+suggestions.getComf().getBrf());
+        comfortText.setText(suggestions.getComf().getTxt());
+        clothing.setText("穿衣   "+ suggestions.getDrsg().getBrf());
+        clothingText.setText(suggestions.getComf().getTxt());
+        ultraviolet.setText("紫外线   "+suggestions.getUv().getBrf());
+        ultravioletText.setText(suggestions.getUv().getTxt());
+        sports.setText("运动   "+suggestions.getSport().getBrf());
+        sportsText.setText(suggestions.getSport().getTxt());
+        cold.setText("感冒   "+suggestions.getFlu().getBrf());
+        coldText.setText(suggestions.getFlu().getTxt());
+        travel.setText("旅游   "+suggestions.getTrav().getBrf());
+        travelText.setText(suggestions.getTrav().getTxt());
+        carwash.setText("洗车   "+suggestions.getCw().getBrf());
+        carwashText.setText(suggestions.getCw().getTxt());
+    }
+
+    /**
+     * 请求城市信息
+     */
+    public void requestCity(){
+        String city = TransformUtils.transformCityName(location.getCity());
+        HttpUtils.getInstance().getHefengCity(city, new Subscriber<HefengSearchBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                DebugUtil.debug("获取城市信息错误: "+e.toString());
+            }
+
+            @Override
+            public void onNext(HefengSearchBean hefengSearchBean) {
+                getCityId(hefengSearchBean);
+            }
+        });
+    }
+
+    /**
+     * 获取城市id
+     * @param hefengSearchBean
+     */
+    public void getCityId(HefengSearchBean hefengSearchBean){
+        String hefengCityId=null;
+        final String province = TransformUtils.transformCityName(location.getProvince());
+        final String city = TransformUtils.transformCityName(location.getCity());
+        final String country = location.getCountry();
+        List<HefengSearchBean.HeWeather5Bean> citys = hefengSearchBean.getHeWeather5();
+        if (citys.get(0).getStatus().equals("ok")){
+            for (HefengSearchBean.HeWeather5Bean weatherCity:citys){
+                HefengSearchBean.HeWeather5Bean.BasicBean cityInfo = weatherCity.getBasic();
+                if (cityInfo.getProv().equals(province)&&cityInfo.getCnty().equals(country)){
+                    hefengCityId=cityInfo.getId();
+                }
+            }
+        }
+        if (hefengCityId==null){
+            suggestionContain.setVisibility(View.GONE);
+        }else{
+            requestSuggestionWithCity(hefengCityId);
+            suggestionContain.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 请求天气预报
+     */
     public void requestForecast(String longitude,String latitude){
-        DebugUtil.debug("正在发送天气预报请求");
         HttpUtils.getInstance().getCaiForecast(longitude, latitude, new Subscriber<CaiForecastBean>() {
             @Override
             public void onCompleted() {
@@ -134,17 +277,19 @@ public class WeatherFragment extends BaseFragment{
 
             @Override
             public void onError(Throwable e) {
-                DebugUtil.debug("onError: "+e.toString());
+                DebugUtil.debug("获取天气预报错误: "+e.toString());
             }
 
             @Override
             public void onNext(CaiForecastBean forecastBean) {
                 showCardData(forecastBean);
-                DebugUtil.debug("onNext: 获取到数据了\n"+forecastBean.toString());
             }
         });
     }
 
+    /**
+     * 刷新
+     */
     public void refresh(){
         lazyLoad();
     }

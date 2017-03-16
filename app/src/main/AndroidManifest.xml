@@ -40,6 +40,16 @@
         </activity>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
+        <receiver android:name=".widget.MyWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="zcj"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget"/>
+        </receiver>
+        <service android:name=".widget.ClockService"/>
     </application>
 
 </manifest>

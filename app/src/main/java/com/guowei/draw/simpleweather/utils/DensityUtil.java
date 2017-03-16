@@ -1,5 +1,6 @@
 package com.guowei.draw.simpleweather.utils;
 
+
 import com.guowei.draw.simpleweather.WeatherApplication;
 
 public class DensityUtil {

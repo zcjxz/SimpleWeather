@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/suggestion_contain"
+    android:visibility="visible"
     android:padding="8dp">
 
     <LinearLayout
@@ -12,9 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/comfort" />
 
         <LinearLayout
@@ -25,18 +25,17 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/suggestBrf"
                 android:id="@+id/comfort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="舒适度  舒适"
-                android:textSize="20sp" />
+                />
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/comfort_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -47,10 +46,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/clothing" />
 
         <LinearLayout
@@ -64,15 +60,14 @@
                 android:id="@+id/clothing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="穿衣指数  热"
-                android:textSize="20sp" />
+                style="@style/suggestBrf"
+                />
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/clothing_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -83,9 +78,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/ultraviolet" />
 
         <LinearLayout
@@ -99,15 +92,14 @@
                 android:id="@+id/ultraviolet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="紫外线  弱"
-                android:textSize="20sp" />
+                style="@style/suggestBrf"
+                />
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/ultraviolet_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -118,9 +110,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/sports" />
 
         <LinearLayout
@@ -134,15 +124,13 @@
                 android:id="@+id/sports"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="运动  较适宜"
-                android:textSize="20sp" />
+                style="@style/suggestBrf"/>
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/sports_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -153,9 +141,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/cold" />
 
         <LinearLayout
@@ -169,15 +155,13 @@
                 android:id="@+id/cold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="感冒  少发"
-                android:textSize="20sp" />
+                style="@style/suggestBrf" />
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/cold_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -188,9 +172,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/travel" />
 
         <LinearLayout
@@ -204,15 +186,14 @@
                 android:id="@+id/travel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="旅游  适宜"
-                android:textSize="20sp" />
-
+                style="@style/suggestBrf"
+                />
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/travel_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -223,9 +204,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="8dp"
+            style="@style/suggestImg"
             android:src="@drawable/car_wash" />
 
         <LinearLayout
@@ -239,15 +218,14 @@
                 android:id="@+id/car_wash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="洗车  较适宜"
-                android:textSize="20sp" />
+                style="@style/suggestBrf" />
 
             <TextView
+                style="@style/suggestText"
                 android:id="@+id/car_wash_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。" />
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

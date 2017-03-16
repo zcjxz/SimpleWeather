@@ -99,7 +99,7 @@ public class CaiRealTimeBean {
          */
 
         private String status;
-        private int temperature;
+        private float temperature;
         private String skycon;
         private double cloudrate;
         private int aqi;
@@ -116,7 +116,7 @@ public class CaiRealTimeBean {
             this.status = status;
         }
 
-        public int getTemperature() {
+        public float getTemperature() {
             return temperature;
         }
 

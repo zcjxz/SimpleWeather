@@ -3,7 +3,7 @@ package com.guowei.draw.simpleweather.bean;
 
 import java.util.List;
 
-public class HefengSearch {
+public class HefengSearchBean {
 
     private List<HeWeather5Bean> HeWeather5;
 

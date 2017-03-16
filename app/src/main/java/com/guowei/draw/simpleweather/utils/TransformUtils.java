@@ -151,4 +151,16 @@ public class TransformUtils {
             return "严重污染";
         }
     }
+
+    /**
+     * 去掉百度地图获取的城市后面的 省，市
+     * @param city
+     * @return
+     */
+    public static String transformCityName(String city){
+        if (city.length()<=1){
+            return "错误";
+        }
+        return city.substring(0, city.length() - 1);
+    }
 }

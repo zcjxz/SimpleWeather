@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvWind;
     private WeatherPagerAdapter viewPagerAdapter;
     private WeatherFragment locationFragment;
+    private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
 
 
     @Override
@@ -96,26 +96,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (supportActionBar!=null){
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
+        //设置监听appbar滑动
+        setAppBarListener();
+        //百度地图初始化
+        mLocationClient =new LocationClient(getApplicationContext());
+        mLocationClient.registerLocationListener(mlistener);
         locationFragment = new WeatherFragment();
         Bundle localBundle = new Bundle();
         localBundle.putBoolean("isLocal",true);
         locationFragment.setArguments(localBundle);
         forecastList.add(locationFragment);
-        Bundle cityBundle = new Bundle();
-        cityBundle.putBoolean("isLocal",false);
-        cityBundle.putString("city","汕头");
-        WeatherFragment cityFragment = new WeatherFragment();
-        cityFragment.setArguments(cityBundle);
-        forecastList.add(cityFragment);
+//        Bundle cityBundle = new Bundle();
+//        cityBundle.putBoolean("isLocal",false);
+//        cityBundle.putString("city","汕头");
+//        WeatherFragment cityFragment = new WeatherFragment();
+//        cityFragment.setArguments(cityBundle);
+//        forecastList.add(cityFragment);
         viewPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(),forecastList);
         viewPager.setAdapter(viewPagerAdapter);
-        //设置监听appbar滑动
-        setAppBarListener();
 //        Glide.with(this).load(R.drawable.bg).into(ivBg);
         titleMenu.setOnClickListener(this);
-        //百度地图初始化
-        mLocationClient =new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(mlistener);
         //动态权限
         List<String> permissionList =new ArrayList<>();
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -128,20 +128,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (!permissionList.isEmpty()){
+            DebugUtil.debug("还未获取满权限");
             String[] permissions=permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(MainActivity.this,permissions,1);
         }else{
-            Log.i("zcj", "已经获取到了权限");
-            requestLocation();
+            startLocation();
         }
+        swipeRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        };
+        swipeRefreshLayout.setOnRefreshListener(swipeRefreshListener);
+        swipeRefreshListener.onRefresh();
+
     }
 
-    private void requestLocation(){
+    public void refresh(){
+        requestLocation();
+    }
+
+    private void startLocation(){
         //开始获取位置
         LocationClientOption option=new LocationClientOption();
         option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
+    }
+    public void requestLocation(){
+        DebugUtil.debug("requsetLocation");
+        if (mLocationClient!=null){
+            mLocationClient.requestLocation();
+        }
     }
 
     /**
@@ -232,15 +251,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentPosition.append("市：").append(bdLocation.getCity()).append("\n");
             currentPosition.append("区：").append(bdLocation.getDistrict()).append("\n");
             currentPosition.append("街道：").append(bdLocation.getStreet()).append("\n");
+            currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
             DebugUtil.debug("onReceiveLocation: \n"+currentPosition);
+            StringBuilder sb=new StringBuilder();
+            sb.append("定位错误：");
+
+            DebugUtil.debug(sb.toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tvLocation.setText(bdLocation.getStreet());
+                    if (bdLocation.getStreet()!=null) {
+                        tvLocation.setText(bdLocation.getStreet());
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             });
             requestRealtimeWeather(longitude+"",latitude+"");
-            locationFragment.setLocation(longitude+"",latitude+"");
+            locationFragment.setLocation(bdLocation);
         }
 
         @Override
@@ -260,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     DebugUtil.debug("成功获取权限");
-                    requestLocation();
+                    startLocation();
                 }else{
                     Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
                 }
@@ -283,12 +310,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onError(Throwable e) {
-
+                DebugUtil.debug("获取实时天气错误： "+e.toString());
             }
 
             @Override
             public void onNext(CaiRealTimeBean caiRealTimeBean) {
-                DebugUtil.debug("onNext: 获取实时天气\n"+caiRealTimeBean.toString());
+                DebugUtil.debug("获取实时天气\n"+caiRealTimeBean.toString());
                 showToolbarData(caiRealTimeBean);
             }
 
@@ -312,5 +339,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvWind.setText(windDirection+"  "+windSpeed);
         int skyconIcon = TransformUtils.transformIcon(result.getSkycon());
         ImageLoadUtil.displayPicFromLocation(skyconIcon,ivSkycon);
+        DebugUtil.debug("关闭刷新");
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
