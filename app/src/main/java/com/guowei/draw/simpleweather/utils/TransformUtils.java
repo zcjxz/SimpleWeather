@@ -93,12 +93,12 @@ public class TransformUtils {
             return R.drawable.cloudy;
         }else if (skycon.equals("RAIN")){
             return R.drawable.rain;
-        }else if (skycon.equals("SNOW")){
-            return R.drawable.snow;
         }else if (skycon.equals("WIND")){
             return R.drawable.wind;
         }else if (skycon.equals("FOG")){
             return R.drawable.fog;
+        }else if (skycon.equals("SNOW")){
+            return R.drawable.snow;
         }
         return R.drawable.clear_day;
     }

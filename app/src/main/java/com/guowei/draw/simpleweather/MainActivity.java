@@ -37,11 +37,17 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
+import com.guowei.draw.simpleweather.evens.StartLocalEvent;
+import com.guowei.draw.simpleweather.evens.StopLocalEvent;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,11 +104,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setTranslucentForDrawerLayout(this,drawerLayout);
+        EventBus.getDefault().register(this);
+        setTranslucentForDrawerLayout(this, drawerLayout);
         setSupportActionBar(toolbar);
         //toolbar不显示标题
         ActionBar supportActionBar = getSupportActionBar();
@@ -114,6 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //百度地图初始化
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mlistener);
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        mLocationClient.setLocOption(option);
+
         locationFragment = new WeatherFragment();
         Bundle localBundle = new Bundle();
         localBundle.putBoolean("isLocal", true);
@@ -168,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
         } else {
             startLocation();
+//            EventBus.getDefault().post(new StartLocalEvent());
         }
         swipeRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -181,9 +205,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.nav_about:
-                        startActivity(new Intent(MainActivity.this,AboutActivity.class));
+                        startActivity(new Intent(MainActivity.this, AboutActivity.class));
                         break;
                 }
                 return true;
@@ -214,23 +238,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void refresh() {
-        requestLocation();
+//        startLocation();
+        EventBus.getDefault().post(new StartLocalEvent());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStartLocalEvent(StartLocalEvent event) {
+        DebugUtil.debug("开始定位了---eventBus");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int i = mLocationClient.requestLocation();
+                DebugUtil.debug("-------------------------------返回码：：：："+ i);
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStopLocalEvent(StopLocalEvent event) {
+        DebugUtil.debug("停止定位了");
+        mLocationClient.stop();
     }
 
     private void startLocation() {
         //开始获取位置
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        mLocationClient.setLocOption(option);
-        mLocationClient.start();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLocationClient.start();
+            }
+        });
+
     }
 
-    public void requestLocation() {
-        DebugUtil.debug("requsetLocation");
-        if (mLocationClient != null) {
-            mLocationClient.requestLocation();
-        }
-    }
 
     /**
      * 监听appbar滑动
@@ -300,10 +340,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         INTERNEDIATE//折叠中
     }
 
+    private void setSwipeRefreshLayoutOff() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(final BDLocation bdLocation) {
+            DebugUtil.debug("收到回调了");
+            if (bdLocation.getAddrStr() == null) {
+//                stopLocation();
+//                startLocation();
+//                EventBus.getDefault().post(new StopLocalEvent());
+                EventBus.getDefault().post(new StartLocalEvent());
+                setSwipeRefreshLayoutOff();
+            }
             StringBuilder currentPosition = new StringBuilder();
             double latitude = bdLocation.getLatitude();
             currentPosition.append("纬度：").append(latitude).append("\n");
@@ -321,21 +378,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentPosition.append("区：").append(bdLocation.getDistrict()).append("\n");
             currentPosition.append("街道：").append(bdLocation.getStreet()).append("\n");
             currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
+            currentPosition.append("getLocType:").append(bdLocation.getLocType()).append("\n");
             DebugUtil.debug("onReceiveLocation: \n" + currentPosition);
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (bdLocation.getStreet() != null) {
                         tvLocation.setText(bdLocation.getStreet());
                     }
-                    swipeRefreshLayout.setRefreshing(false);
                 }
             });
             requestRealtimeWeather(longitude + "", latitude + "");
             SharedPreferences sp = getSharedPreferences("local", MODE_PRIVATE);
             sp.edit().putString("longitude", longitude + "").putString("latitude", latitude + "").commit();
             locationFragment.setLocation(bdLocation);
+
+            setSwipeRefreshLayoutOff();
+//                EventBus.getDefault().post(new StopLocalEvent());
+
         }
 
         @Override
@@ -410,6 +470,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int skyconIcon = TransformUtils.transformIcon(result.getSkycon());
         ImageLoadUtil.displayPicFromLocation(skyconIcon, ivSkycon);
         DebugUtil.debug("关闭刷新");
-        swipeRefreshLayout.setRefreshing(false);
+        setSwipeRefreshLayoutOff();
     }
 }
