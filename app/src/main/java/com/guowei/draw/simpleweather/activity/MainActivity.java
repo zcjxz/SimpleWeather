@@ -1,11 +1,10 @@
-package com.guowei.draw.simpleweather;
+package com.guowei.draw.simpleweather.activity;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -35,6 +34,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.evens.StartLocalEvent;
@@ -43,7 +43,9 @@ import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
+import com.guowei.draw.simpleweather.utils.LiveUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
+import com.guowei.draw.simpleweather.widget.ClockService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,6 +115,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean isRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
+        if (!isRunning){
+            Intent clockIntent=new Intent(this, ClockService.class);
+            startService(clockIntent);
+        }
     }
 
     @Override

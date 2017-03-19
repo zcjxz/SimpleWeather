@@ -1,14 +1,14 @@
 package com.guowei.draw.simpleweather.widget;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.guowei.draw.simpleweather.C;
-import com.guowei.draw.simpleweather.utils.DebugUtil;
-import com.guowei.draw.simpleweather.utils.DrawUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Timer;
@@ -16,8 +16,10 @@ import java.util.TimerTask;
 
 public class ClockService extends Service{
 
-    private Timer timer;
+    private Timer clockTimer;
+    private Timer weatherTimer;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final static int SERVICE_ID=135;
 
     @Nullable
     @Override
@@ -27,20 +29,54 @@ public class ClockService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        if (Build.VERSION.SDK_INT<18){
+            startForeground(SERVICE_ID,new Notification());
+        }else{
+            Intent innerIntent =new Intent(this,GrayInnerService.class);
+            startService(innerIntent);
+            startForeground(SERVICE_ID,new Notification());
+        }
+        return Service.START_STICKY;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i("zcj", "Service onCreate");
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
+        clockTimer = new Timer();
+        clockTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 updateClock();
             }
         },0,1000);
+        weatherTimer = new Timer();
+        weatherTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                sendBroadcast(new Intent(C.UPDATE_WEATHER));
+            }
+        },0,1000*60*30);
+    }
+
+    /**
+     * 给 API >= 18 的平台上用灰色保活手段
+     */
+    public static class GrayInnerService extends Service{
+
+        @Nullable
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            startForeground(SERVICE_ID,new Notification());
+            stopForeground(true);
+            stopSelf();
+            return super.onStartCommand(intent, flags, startId);
+        }
     }
 
     private void updateClock() {
@@ -59,10 +95,13 @@ public class ClockService extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (timer!=null){
-            timer.cancel();
-            timer=null;
+        if (clockTimer !=null){
+            clockTimer.cancel();
+            clockTimer =null;
         }
-        Log.i("zcj", "onDestroy: --------");
+        if (weatherTimer !=null){
+            weatherTimer.cancel();
+            weatherTimer =null;
+        }
     }
 }

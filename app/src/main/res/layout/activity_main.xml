@@ -6,13 +6,15 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guowei.draw.simpleweather.MainActivity"
+    tools:context="com.guowei.draw.simpleweather.activity.MainActivity"
     tools:openDrawer="start">
     <include layout="@layout/layout_main"
         android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
     <android.support.design.widget.NavigationView
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         android:id="@+id/navigationView"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"

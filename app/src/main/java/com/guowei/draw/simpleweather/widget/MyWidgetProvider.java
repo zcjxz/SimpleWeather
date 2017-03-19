@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 
 
 import com.guowei.draw.simpleweather.C;
-import com.guowei.draw.simpleweather.MainActivity;
+import com.guowei.draw.simpleweather.activity.MainActivity;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.DrawUtils;
@@ -25,7 +25,6 @@ public class MyWidgetProvider extends AppWidgetProvider{
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.i(TAG, "onUpdate: ");
         context.startService(new Intent(context,ClockService.class));
-        context.startService(new Intent(context,WeatherService.class));
         Intent mainActivityIntent= new Intent(context, MainActivity.class);
         PendingIntent pending=PendingIntent.getActivity(context,0,mainActivityIntent,0);
         RemoteViews remoteViews=new RemoteViews(context.getPackageName(), R.layout.layout_widget);
@@ -59,7 +58,6 @@ public class MyWidgetProvider extends AppWidgetProvider{
         super.onDisabled(context);
         Log.i(TAG, "onDisabled: ");
         context.stopService(new Intent(context,ClockService.class));
-        context.stopService(new Intent(context,WeatherService.class));
     }
 
     @Override
@@ -84,4 +82,5 @@ public class MyWidgetProvider extends AppWidgetProvider{
         }
         super.onReceive(context, intent);
     }
+
 }

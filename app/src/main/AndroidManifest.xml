@@ -35,7 +35,7 @@
             android:value="elQI6sbY8gVV9g2x8aZrWFssg9a867mO" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/MainActivityStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,10 +62,21 @@
         </receiver>
 
         <service android:name=".widget.ClockService" />
-        <service android:name=".widget.WeatherService" />
 
-        <activity android:name=".AboutActivity"
+        <activity android:name=".activity.AboutActivity"
             android:label="深圳国威科技有限公司"></activity>
+
+        <receiver android:name=".widget.LiveReceiver">
+            <intent-filter>
+                <!-- 开机广播 -->
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <!-- 解锁屏幕 -->
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <!-- 网络连接变化 -->
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

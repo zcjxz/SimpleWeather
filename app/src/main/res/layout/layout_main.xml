@@ -26,13 +26,14 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
+                    android:fitsSystemWindows="true"
                     android:id="@+id/iv_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop" />
 
                 <android.support.v7.widget.Toolbar
-                    android:fitsSystemWindows="true"
+
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
