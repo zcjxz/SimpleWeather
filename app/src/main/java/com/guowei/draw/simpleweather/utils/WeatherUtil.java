@@ -22,6 +22,7 @@ public class WeatherUtil {
     private WeatherApplication application;
 
     public void updateWeather(){
+        DebugUtil.debug("updateWeather------------");
         application = WeatherApplication.getApplication();
         widgetManager = AppWidgetManager.getInstance(application);
         remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_widget);
@@ -29,6 +30,7 @@ public class WeatherUtil {
         SharedPreferences sp = application.getSharedPreferences("local", Context.MODE_PRIVATE);
         String longitude = sp.getString("longitude", "");
         String latitude = sp.getString("latitude", "");
+        DebugUtil.debug("获取sp\n longitude = "+longitude+"\n"+ "latitude = "+latitude);
         HttpUtils.getInstance().getCaiRealTimeWeather(longitude, latitude, new Subscriber<CaiRealTimeBean>() {
             @Override
             public void onCompleted() {

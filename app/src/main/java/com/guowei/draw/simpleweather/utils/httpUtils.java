@@ -69,9 +69,9 @@ public class HttpUtils {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-    public void getCaiForecast(String longistude, String latitude, Subscriber<CaiForecastBean> subscriber){
+    public void getCaiForecast(String longitude, String latitude, Subscriber<CaiForecastBean> subscriber){
         createCaiRetrofit();
-        Observable<CaiForecastBean> observable = caiyunServer.getForecastWeather(caiKey, longistude, latitude);
+        Observable<CaiForecastBean> observable = caiyunServer.getForecastWeather(caiKey, longitude, latitude);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

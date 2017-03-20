@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.guowei.draw.simpleweather.C;
+import com.guowei.draw.simpleweather.utils.DebugUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Timer;
@@ -29,20 +30,6 @@ public class ClockService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (Build.VERSION.SDK_INT<18){
-            startForeground(SERVICE_ID,new Notification());
-        }else{
-            Intent innerIntent =new Intent(this,GrayInnerService.class);
-            startService(innerIntent);
-            startForeground(SERVICE_ID,new Notification());
-        }
-        return Service.START_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.i("zcj", "Service onCreate");
         clockTimer = new Timer();
         clockTimer.schedule(new TimerTask() {
             @Override
@@ -54,9 +41,28 @@ public class ClockService extends Service{
         weatherTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                sendBroadcast(new Intent(C.UPDATE_WEATHER));
+                updateWeather();
             }
         },0,1000*60*30);
+        DebugUtil.debug("启动 ClockService。。");
+        if (Build.VERSION.SDK_INT<18){
+            startForeground(SERVICE_ID,new Notification());
+        }else{
+            startForeground(SERVICE_ID,new Notification());
+            Intent innerIntent =new Intent(this,GrayInnerService.class);
+            startService(innerIntent);
+        }
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    private void updateWeather(){
+        DebugUtil.debug("发送更新天气广播");
+        sendBroadcast(new Intent(C.UPDATE_WEATHER));
     }
 
     /**
@@ -103,5 +109,6 @@ public class ClockService extends Service{
             weatherTimer.cancel();
             weatherTimer =null;
         }
+        DebugUtil.debug("stop ClockService");
     }
 }

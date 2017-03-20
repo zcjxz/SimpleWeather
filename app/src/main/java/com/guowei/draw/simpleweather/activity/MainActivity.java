@@ -257,13 +257,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStartLocalEvent(StartLocalEvent event) {
         DebugUtil.debug("开始定位了---eventBus");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int i = mLocationClient.requestLocation();
-                DebugUtil.debug("-------------------------------返回码：：：："+ i);
-            }
-        });
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                int i = mLocationClient.requestLocation();
+//                DebugUtil.debug("-------------------------------返回码：：：："+ i);
+//            }
+//        });
+        mLocationClient.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -402,11 +403,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             requestRealtimeWeather(longitude + "", latitude + "");
             SharedPreferences sp = getSharedPreferences("local", MODE_PRIVATE);
-            sp.edit().putString("longitude", longitude + "").putString("latitude", latitude + "").commit();
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putString("longitude", longitude + "").putString("latitude", latitude + "");
+            edit.apply();
+            DebugUtil.debug("写入sp了");
             locationFragment.setLocation(bdLocation);
 
             setSwipeRefreshLayoutOff();
-//                EventBus.getDefault().post(new StopLocalEvent());
+            EventBus.getDefault().post(new StopLocalEvent());
 
         }
 
