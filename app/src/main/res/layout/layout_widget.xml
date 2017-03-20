@@ -34,7 +34,7 @@
                         android:padding="8dp"
                         android:textSize="16sp"
                         android:id="@+id/widget_temp"
-                        android:text="17度"
+                        style="@style/whiteFont"
                         android:gravity="bottom|end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -54,7 +54,7 @@
                         <TextView
                             android:textSize="12sp"
                             android:gravity="top|end"
-                            android:text="三级"
+                            style="@style/whiteFont"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/widget_wind"
@@ -72,8 +72,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
+                            style="@style/whiteFont"
                             android:id="@+id/widget_time"
-                            android:text="周四\n09:41"
+
                             android:gravity="center"
                             android:layout_marginBottom="8dp"
                             android:layout_width="wrap_content"
@@ -93,55 +94,55 @@
         </FrameLayout>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/widget_one_day"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="明天"/>
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/widget_one_skycon"
-                android:src="@drawable/clear_day"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/widget_two_day"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="后天"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+            <!--<TextView-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:id="@+id/widget_one_day"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="明天"/>-->
+            <!--<ImageView-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:id="@+id/widget_one_skycon"-->
+                <!--android:src="@drawable/clear_day"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp" />-->
+            <!--<TextView-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:id="@+id/widget_two_day"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="后天"/>-->
 
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/widget_two_skycon"
-                android:src="@drawable/clear_day"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+            <!--<ImageView-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:id="@+id/widget_two_skycon"-->
+                <!--android:src="@drawable/clear_day"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp" />-->
 
-            <TextView
-                android:id="@+id/widget_three_day"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="大后天"/>
+            <!--<TextView-->
+                <!--android:id="@+id/widget_three_day"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="大后天"/>-->
 
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/widget_three_skycon"
-                android:src="@drawable/clear_day"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:id="@+id/widget_three_skycon"-->
+                <!--android:src="@drawable/clear_day"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.guowei.draw.simpleweather.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -34,6 +33,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
@@ -44,6 +44,7 @@ import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
 import com.guowei.draw.simpleweather.utils.LiveUtil;
+import com.guowei.draw.simpleweather.utils.SpUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
 import com.guowei.draw.simpleweather.widget.ClockService;
 
@@ -402,11 +403,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
             requestRealtimeWeather(longitude + "", latitude + "");
-            SharedPreferences sp = getSharedPreferences("local", MODE_PRIVATE);
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putString("longitude", longitude + "").putString("latitude", latitude + "");
-            edit.apply();
-            DebugUtil.debug("写入sp了");
+            SpUtil.postString(C.SP_NAME,C.KEY_LONGITUDE,longitude+"");
+            SpUtil.postString(C.SP_NAME,C.KEY_LATITUDE,latitude+"");
             locationFragment.setLocation(bdLocation);
 
             setSwipeRefreshLayoutOff();
@@ -477,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
         //Toolbar上的天气概况
         tvTemplate.setText((int) result.getTemperature() + "℃");
+        SpUtil.postInt(C.SP_NAME,C.KEY_TEMP, (int) result.getTemperature());
         String skycon = TransformUtils.transformSkycon(result.getSkycon());
         tvSkycon.setText(skycon);
         String windDirection = TransformUtils.transformDirection(

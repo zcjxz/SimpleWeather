@@ -1,19 +1,26 @@
 package com.guowei.draw.simpleweather.widget;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.guowei.draw.simpleweather.C;
+import com.guowei.draw.simpleweather.R;
+import com.guowei.draw.simpleweather.WeatherApplication;
+import com.guowei.draw.simpleweather.activity.MainActivity;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class ClockService extends Service{
 
@@ -45,13 +52,26 @@ public class ClockService extends Service{
             }
         },0,1000*60*30);
         DebugUtil.debug("启动 ClockService。。");
-        if (Build.VERSION.SDK_INT<18){
-            startForeground(SERVICE_ID,new Notification());
-        }else{
-            startForeground(SERVICE_ID,new Notification());
-            Intent innerIntent =new Intent(this,GrayInnerService.class);
-            startService(innerIntent);
-        }
+        RemoteViews remoteViews=new RemoteViews(this.getPackageName(),R.layout.layout_notification);
+        //开启常驻通知
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(WeatherApplication.getApplication());
+//        builder.setContentTitle("New mail from ")
+//                .setContentText("lalala")
+                builder.setSmallIcon(R.drawable.clear_day);
+        Intent mainActivityIntent=new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,
+                    0,mainActivityIntent,0);
+        builder.setContentIntent(pendingIntent);
+        builder.setCustomContentView(remoteViews);
+        Notification notification=builder.build();
+        startForeground(SERVICE_ID,notification);
+//        if (Build.VERSION.SDK_INT<18){
+//            startForeground(SERVICE_ID,notification);
+//        }else{
+//            startForeground(SERVICE_ID,notification);
+//            Intent innerIntent =new Intent(this,GrayInnerService.class);
+//            startService(innerIntent);
+//        }
         return Service.START_STICKY;
     }
 

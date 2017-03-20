@@ -2,6 +2,8 @@ package com.guowei.draw.simpleweather.utils;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
@@ -32,15 +34,15 @@ public class DrawUtils {
     private SimpleDateFormat sdfS;
     private Date date;
     private Paint pointPaint;
-    private final Paint heightPaint;
     private SimpleDateFormat sdfE;
     private final SimpleDateFormat sdfH;
+    //画温度的paint
+    private Paint tempPaint;
 
     public DrawUtils(){
         application = WeatherApplication.getApplication();
         paint = new Paint();
         paint.setColor(Color.WHITE);
-        paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
@@ -60,12 +62,12 @@ public class DrawUtils {
         pointPaint.setAntiAlias(true);
         pointPaint.setStrokeWidth(2);
 
-        heightPaint = new Paint();
-        heightPaint.setColor(application.getResources().getColor(R.color.colorAccent));
-        heightPaint.setStrokeCap(Paint.Cap.ROUND);
-        heightPaint.setStyle(Paint.Style.STROKE);
-        heightPaint.setStrokeWidth(strokeWidth+20);
-        heightPaint.setMaskFilter(new BlurMaskFilter(strokeWidth, BlurMaskFilter.Blur.NORMAL));
+        tempPaint=new Paint();
+        tempPaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorBlue));
+        tempPaint.setStrokeCap(Paint.Cap.ROUND);
+        tempPaint.setStyle(Paint.Style.STROKE);
+        tempPaint.setStrokeWidth(strokeWidth);
+        tempPaint.setAntiAlias(true);
     }
 
     public void updateClock(){
@@ -88,20 +90,26 @@ public class DrawUtils {
                 strokeWidth,
                 mWidth-strokeWidth,
                 mHeight-strokeWidth);
-//        canvas.drawArc(bigRectF,120,300,false,heightPaint);
         canvas.drawArc(bigRectF,120,300,false,paint);
         //画小圆
         RectF smalRectF=new RectF(strokeWidth,
                 2*weightPx,
                 4*weightPx+strokeWidth,
                 mHeight-strokeWidth);
-//        canvas.drawArc(smalRectF,120,180,false,heightPaint);
         canvas.drawArc(smalRectF,120,180,false,paint);
+        //画温度
+        WeatherApplication application = WeatherApplication.getApplication();
+        int temp = SpUtil.getInt("local", "temp",0);
+        if (temp>=30){
+            tempPaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorRed));
+        }else{
+            tempPaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorBlue));
+        }
+        int arc=180/40*temp;
+        canvas.drawArc(smalRectF,120,arc,false,tempPaint);
         canvas.save();
-//        canvas.translate(6*weightPx+2*strokeWidth,3*weightPx+strokeWidth);
         canvas.rotate(6*second,6*weightPx+2*strokeWidth,3*weightPx+strokeWidth);
-
-//        canvas.drawCircle(6*weightPx+2*strokeWidth,strokeWidth+DensityUtil.dip2px(10),5,heightPaint);
+        //画小点
         canvas.drawCircle(6*weightPx+2*strokeWidth,strokeWidth+DensityUtil.dip2px(10),5,pointPaint);
         canvas.restore();
         remoteViews.setTextViewText(R.id.widget_time,eFormat+"\n"+hourFormat);
@@ -110,6 +118,7 @@ public class DrawUtils {
         canvas=null;
         bitmap=null;
     }
+
 
     private void init(){
         if (application==null){
