@@ -37,4 +37,10 @@
     <string name="air_quality">Air quality</string>
     <string name="aqi_eximious">Eximious</string>
     <string name="aqi_fine">Fine</string>
+    <string name="aqi_lightly_pollution">Lightly pollution</string>
+    <string name="aqi_middle_pollution">Middle pollution</string>
+    <string name="aqi_heavy_pollution">Heavy pollution</string>
+    <string name="aqi_serious_pollution">Serious pollution</string>
+    <string name="image_from">Images from Bing</string>
+    <string name="about_us">About Us</string>
 </resources>

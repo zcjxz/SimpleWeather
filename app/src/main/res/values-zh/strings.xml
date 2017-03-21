@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">简天气</string>
-    <string name="clear_day" translatable="false">晴天</string>
+    <string name="clear_day">晴天</string>
     <string name="cloudy">多云</string>
     <string name="Raining">雨</string>
     <string name="snow">雪</string>
@@ -38,4 +38,10 @@
     <string name="air_quality">空气质量</string>
     <string name="aqi_eximious">优</string>
     <string name="aqi_fine">良</string>
+    <string name="aqi_middle_pollution">中度污染</string>
+    <string name="aqi_heavy_pollution">重度污染</string>
+    <string name="aqi_serious_pollution">严重污染</string>
+    <string name="aqi_lightly_pollution">轻度污染</string>
+    <string name="image_from">图片来自Bing</string>
+    <string name="about_us">关于我们</string>
 </resources>
