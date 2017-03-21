@@ -22,12 +22,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class ClockService extends Service{
+public class ClockService extends Service {
 
     private Timer clockTimer;
     private Timer weatherTimer;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private final static int SERVICE_ID=135;
 
     @Nullable
     @Override
@@ -43,28 +42,27 @@ public class ClockService extends Service{
             public void run() {
                 updateClock();
             }
-        },0,1000);
+        }, 0, 1000);
         weatherTimer = new Timer();
         weatherTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 updateWeather();
             }
-        },0,1000*60*30);
+        }, 0, 1000 * 60 * 30);
         DebugUtil.debug("启动 ClockService。。");
-        RemoteViews remoteViews=new RemoteViews(this.getPackageName(),R.layout.layout_notification);
+        RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.layout_notification);
         //开启常驻通知
         NotificationCompat.Builder builder = new NotificationCompat.Builder(WeatherApplication.getApplication());
-//        builder.setContentTitle("New mail from ")
-//                .setContentText("lalala")
-                builder.setSmallIcon(R.drawable.clear_day);
-        Intent mainActivityIntent=new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,
-                    0,mainActivityIntent,0);
+        builder.setSmallIcon(R.drawable.clear_day);
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, mainActivityIntent, 0);
         builder.setContentIntent(pendingIntent);
         builder.setCustomContentView(remoteViews);
-        Notification notification=builder.build();
-        startForeground(SERVICE_ID,notification);
+//        builder.setCustomBigContentView(remoteViews);
+        Notification notification = builder.build();
+        startForeground(C.NOTIFICATION_ID, notification);
 //        if (Build.VERSION.SDK_INT<18){
 //            startForeground(SERVICE_ID,notification);
 //        }else{
@@ -80,7 +78,7 @@ public class ClockService extends Service{
         super.onCreate();
     }
 
-    private void updateWeather(){
+    private void updateWeather() {
         DebugUtil.debug("发送更新天气广播");
         sendBroadcast(new Intent(C.UPDATE_WEATHER));
     }
@@ -88,7 +86,7 @@ public class ClockService extends Service{
     /**
      * 给 API >= 18 的平台上用灰色保活手段
      */
-    public static class GrayInnerService extends Service{
+    public static class GrayInnerService extends Service {
 
         @Nullable
         @Override
@@ -98,7 +96,7 @@ public class ClockService extends Service{
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            startForeground(SERVICE_ID,new Notification());
+            startForeground(C.NOTIFICATION_ID, new Notification());
             stopForeground(true);
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
@@ -121,13 +119,13 @@ public class ClockService extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (clockTimer !=null){
+        if (clockTimer != null) {
             clockTimer.cancel();
-            clockTimer =null;
+            clockTimer = null;
         }
-        if (weatherTimer !=null){
+        if (weatherTimer != null) {
             weatherTimer.cancel();
-            weatherTimer =null;
+            weatherTimer = null;
         }
         DebugUtil.debug("stop ClockService");
     }

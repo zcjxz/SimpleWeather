@@ -2,34 +2,34 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeRefreshLayout"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-            android:fitsSystemWindows="true"
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:fitsSystemWindows="true"
                 android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:fitsSystemWindows="true"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                    android:fitsSystemWindows="true"
                     android:id="@+id/iv_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
                     android:scaleType="centerCrop" />
 
                 <android.support.v7.widget.Toolbar
@@ -41,10 +41,10 @@
                     app:layout_collapseMode="pin">
 
                     <RelativeLayout
-                        android:paddingTop="16dp"
-                        android:fitsSystemWindows="true"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        android:paddingTop="16dp">
 
                         <ImageView
                             android:id="@+id/title_menu"
@@ -59,11 +59,11 @@
                             android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
                             android:gravity="center"
                             android:textSize="20sp"
-                            android:theme="@style/whiteFont"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true" />
+                            android:theme="@style/whiteFont" />
                     </RelativeLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -83,29 +83,38 @@
                         android:theme="@style/whiteFont" />
 
 
-
                     <ImageView
-                        android:layout_below="@id/tv_template"
                         android:id="@+id/iv_skycon"
                         android:layout_width="32dp"
-                        android:layout_height="32dp" />
+                        android:layout_height="32dp"
+                        android:layout_below="@id/tv_template" />
+
                     <TextView
-                        android:layout_marginLeft="8dp"
-                        android:gravity="center"
                         android:id="@+id/skycon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_template"
-                        android:layout_toRightOf="@id/iv_skycon"
                         android:layout_alignBottom="@id/iv_skycon"
+                        android:layout_below="@id/tv_template"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/iv_skycon"
+                        android:gravity="center"
                         android:theme="@style/whiteFont" />
+
                     <TextView
-                        android:layout_marginTop="8dp"
                         android:id="@+id/tv_wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/skycon"
-                        />
+                        android:layout_marginTop="8dp"
+                        android:theme="@style/whiteFont"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@id/tv_wind"
+                        android:text="图片来自Bing"
+                        android:theme="@style/whiteFont"/>
                 </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -115,7 +124,8 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

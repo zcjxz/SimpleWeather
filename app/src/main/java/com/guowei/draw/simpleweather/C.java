@@ -7,4 +7,6 @@ public class C {
     public static String KEY_LONGITUDE="longitude";
     public static String KEY_LATITUDE="latitude";
     public static String KEY_TEMP="temp";
+    public static int NOTIFICATION_ID=135;
+    public static String DU="℃";
 }

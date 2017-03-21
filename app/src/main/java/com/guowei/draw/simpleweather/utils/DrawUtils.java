@@ -9,6 +9,7 @@ import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.widget.RemoteViews;
 
@@ -38,6 +39,13 @@ public class DrawUtils {
     private final SimpleDateFormat sdfH;
     //画温度的paint
     private Paint tempPaint;
+    //根号3的近似值
+    private float radical3=1.732f;
+    //温度角标的边长
+    private int indicateLine=5;
+    //温度角标和表盘的间距
+    private int indicateMargin=3;
+    private final Paint indicatePaint;
 
     public DrawUtils(){
         application = WeatherApplication.getApplication();
@@ -68,6 +76,11 @@ public class DrawUtils {
         tempPaint.setStyle(Paint.Style.STROKE);
         tempPaint.setStrokeWidth(strokeWidth);
         tempPaint.setAntiAlias(true);
+
+        indicatePaint = new Paint();
+        indicatePaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorBlue));
+        indicatePaint.setStrokeWidth(5);
+        indicatePaint.setAntiAlias(true);
     }
 
     public void updateClock(){
@@ -98,15 +111,25 @@ public class DrawUtils {
                 mHeight-strokeWidth);
         canvas.drawArc(smalRectF,120,180,false,paint);
         //画温度
-        WeatherApplication application = WeatherApplication.getApplication();
         int temp = SpUtil.getInt("local", "temp",0);
         if (temp>=30){
             tempPaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorRed));
         }else{
             tempPaint.setColor(WeatherApplication.getApplication().getResources().getColor(R.color.colorBlue));
         }
-        int arc=180/40*temp;
+        int arc=180/45*temp;
         canvas.drawArc(smalRectF,120,arc,false,tempPaint);
+        //画温度角标
+        canvas.save();
+        canvas.rotate(-150,weightPx*2+strokeWidth,4*weightPx+strokeWidth);
+        canvas.rotate(arc,weightPx*2+strokeWidth,4*weightPx+strokeWidth);
+        Path tempPath=new Path();
+        tempPath.moveTo(weightPx*2+strokeWidth,weightPx*2+strokeWidth+DensityUtil.dip2px(indicateMargin));
+        tempPath.lineTo(weightPx*2-DensityUtil.dip2px(0.5f*indicateLine)+strokeWidth,weightPx*2+strokeWidth+DensityUtil.dip2px(indicateMargin)+DensityUtil.dip2px(radical3*indicateLine));
+        tempPath.lineTo(weightPx*2+DensityUtil.dip2px(0.5f*indicateLine)+strokeWidth,weightPx*2+strokeWidth+DensityUtil.dip2px(indicateMargin)+DensityUtil.dip2px(radical3*indicateLine));
+        tempPath.close();
+        canvas.drawPath(tempPath,indicatePaint);
+        canvas.restore();
         canvas.save();
         canvas.rotate(6*second,6*weightPx+2*strokeWidth,3*weightPx+strokeWidth);
         //画小点

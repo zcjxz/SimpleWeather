@@ -77,7 +77,7 @@ public class MyWidgetProvider extends AppWidgetProvider{
         }else if (action.equals(C.UPDATE_WEATHER)){
             DebugUtil.debug("收到更新天气广播");
             WeatherUtil weatherUtil = new WeatherUtil();
-            weatherUtil.updateWeather();
+            weatherUtil.update();
             weatherUtil=null;
         }
         super.onReceive(context, intent);

@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp">
+    android:layout_height="match_parent">
     <ImageView
-        android:layout_margin="6dp"
-        android:src="@drawable/clear_day"
+        android:paddingLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
         android:id="@+id/notification_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
-    <TextView
-        android:id="@+id/notification_skycon"
-        android:text="25度"
-        android:padding="4dp"
-        android:textSize="18sp"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/notification_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:padding="4dp"
-        android:layout_toRightOf="@id/notification_icon"
-        android:layout_below="@id/notification_skycon"
-        android:text="晴"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:padding="4dp"
-        android:id="@+id/notification_aqi"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@android:color/black"
+            android:id="@+id/notification_temp"
+            android:text="正在刷新数据"
+            android:padding="4dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@android:color/black"
+            android:id="@+id/notification_skycon"
+            android:padding="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="8dp"
         android:layout_alignParentRight="true"
-        android:text="空气质量：优"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:padding="4dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/notification_aqi"
-        android:text="东北风 三级"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@android:color/black"
+            android:padding="4dp"
+            android:id="@+id/notification_aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@android:color/black"
+            android:padding="4dp"
+            android:id="@+id/notification_wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </RelativeLayout>
