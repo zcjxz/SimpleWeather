@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">简天气</string>
+    <string name="clear_day" translatable="false">晴天</string>
+    <string name="cloudy">多云</string>
+    <string name="Raining">雨</string>
+    <string name="snow">雪</string>
+    <string name="clear_night">晴夜</string>
+    <string name="wind">风</string>
+    <string name="fog">雾</string>
+    <string name="east_wind">东风</string>
+    <string name="west_wind">西风</string>
+    <string name="south_wind">南风</string>
+    <string name="north_wind">北风</string>
+    <string name="southeast_wind">东南风</string>
+    <string name="northeast_wind">东北风</string>
+    <string name="southwest_wind">西南风</string>
+    <string name="northwest_wind">西北风</string>
+    <string name="none_wind">无</string>
+    <string name="force_1">一级</string>
+    <string name="force_2">二级</string>
+    <string name="force_3">三级</string>
+    <string name="force_4">四级</string>
+    <string name="force_5">五级</string>
+    <string name="force_6">六级</string>
+    <string name="force_7">七级</string>
+    <string name="force_8">八级</string>
+    <string name="force_9">九级</string>
+    <string name="force_18">十八级</string>
+    <string name="force_17">十七级</string>
+    <string name="force_16">十六级</string>
+    <string name="force_15">十五级</string>
+    <string name="force_14">十四级</string>
+    <string name="force_13">十三级</string>
+    <string name="force_12">十二级</string>
+    <string name="force_11">十一级</string>
+    <string name="force_10">十级</string>
+    <string name="air_quality">空气质量</string>
+    <string name="aqi_eximious">优</string>
+    <string name="aqi_fine">良</string>
+</resources>
