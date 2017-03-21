@@ -25,5 +25,6 @@
     </style>
     <style name="suggestText">
         <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginRight">8dp</item>
     </style>
 </resources>

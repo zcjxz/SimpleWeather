@@ -10,6 +10,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,10 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CollapsingToolbarLayoutState state;
     public LocationClient mLocationClient = null;
     public BDLocationListener mlistener = new MyLocationListener();
-    private ArrayList<WeatherFragment> forecastList = new ArrayList<>();
+//    private ArrayList<WeatherFragment> forecastList = new ArrayList<>();
 
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
+//    @BindView(R.id.viewpager)
+//    ViewPager viewPager;
+    @BindView(R.id.fl_scroll)
+    FrameLayout flScroll;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.appbar)
@@ -101,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView ivSkycon;
     @BindView(R.id.tv_wind)
     TextView tvWind;
-    private WeatherPagerAdapter viewPagerAdapter;
+//    private WeatherPagerAdapter viewPagerAdapter;
     private WeatherFragment locationFragment;
     private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
 
@@ -115,7 +120,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -154,15 +165,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bundle localBundle = new Bundle();
         localBundle.putBoolean("isLocal", true);
         locationFragment.setArguments(localBundle);
-        forecastList.add(locationFragment);
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fl_scroll,locationFragment);
+        transaction.commit();
+//        forecastList.add(locationFragment);
+
 //        Bundle cityBundle = new Bundle();
 //        cityBundle.putBoolean("isLocal",false);
 //        cityBundle.putString("city","汕头");
 //        WeatherFragment cityFragment = new WeatherFragment();
 //        cityFragment.setArguments(cityBundle);
 //        forecastList.add(cityFragment);
-        viewPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), forecastList);
-        viewPager.setAdapter(viewPagerAdapter);
+//        viewPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), forecastList);
+//        viewPager.setAdapter(viewPagerAdapter);
         titleMenu.setOnClickListener(this);
         new Thread(new Runnable() {
             @Override
@@ -406,7 +423,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SpUtil.postString(C.SP_NAME,C.KEY_LONGITUDE,longitude+"");
             SpUtil.postString(C.SP_NAME,C.KEY_LATITUDE,latitude+"");
             locationFragment.setLocation(bdLocation);
-
             setSwipeRefreshLayoutOff();
             EventBus.getDefault().post(new StopLocalEvent());
 
