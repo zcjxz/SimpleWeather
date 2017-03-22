@@ -9,10 +9,10 @@ import rx.Observable;
 
 public interface CaiyunServer {
     //获取实时天气
-    @GET("{caiKey}/{longitude},{latitude}/realtime.json")
-    Observable<CaiRealTimeBean> getRealTimeWeather(@Path("caiKey") String key, @Path("longitude") String longitude, @Path("latitude") String latitude);
+    @GET("{cai_key}/{longitude},{latitude}/realtime.json")
+    Observable<CaiRealTimeBean> getRealTimeWeather(@Path("cai_key") String key, @Path("longitude") String longitude, @Path("latitude") String latitude);
 
     //获取天气预报
-    @GET("{caiKey}/{longitude},{latitude}/forecast.json")
-    Observable<CaiForecastBean> getForecastWeather(@Path("caiKey") String key,@Path("longitude") String longitude,@Path("latitude") String latitude);
+    @GET("{cai_key}/{longitude},{latitude}/forecast.json")
+    Observable<CaiForecastBean> getForecastWeather(@Path("cai_key") String key,@Path("longitude") String longitude,@Path("latitude") String latitude);
 }

@@ -3,7 +3,7 @@
     <string name="app_name">简天气</string>
     <string name="clear_day">晴天</string>
     <string name="cloudy">多云</string>
-    <string name="Raining">雨</string>
+    <string name="raining">雨</string>
     <string name="snow">雪</string>
     <string name="clear_night">晴夜</string>
     <string name="wind">风</string>
@@ -42,6 +42,25 @@
     <string name="aqi_heavy_pollution">重度污染</string>
     <string name="aqi_serious_pollution">严重污染</string>
     <string name="aqi_lightly_pollution">轻度污染</string>
-    <string name="image_from">图片来自Bing</string>
+    <string name="image_from">图片来自 Bing</string>
     <string name="about_us">关于我们</string>
+    <string name="location_permission">同意定位权限才能获取当地的天气哦</string>
+    <string name="local_error">发生未知错误</string>
+    <string name="today">今天</string>
+    <string name="tomorrow">明天</string>
+    <string name="day">日</string>
+    <string name="comfortable">舒适度</string>
+    <string name="clothing">穿衣</string>
+    <string name="ultraviolet_rays">紫外线</string>
+    <string name="sports">运动</string>
+    <string name="cold">感冒</string>
+    <string name="travel">旅游</string>
+    <string name="car_washing">洗车</string>
+    <string name="overcast">yin</string>
+    <string name="no_connection">当前无网络连接</string>
+    <string name="please_refresh_after_connected">请联网后刷新</string>
+    <string name="confirm">确定</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-4264047892026990/8449021665</string>
+
 </resources>

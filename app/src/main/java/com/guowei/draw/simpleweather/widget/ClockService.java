@@ -36,6 +36,14 @@ public class ClockService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (clockTimer != null) {
+            clockTimer.cancel();
+            clockTimer = null;
+        }
+        if (weatherTimer != null) {
+            weatherTimer.cancel();
+            weatherTimer = null;
+        }
         clockTimer = new Timer();
         clockTimer.schedule(new TimerTask() {
             @Override
@@ -54,7 +62,7 @@ public class ClockService extends Service {
         RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.layout_notification);
         //开启常驻通知
         NotificationCompat.Builder builder = new NotificationCompat.Builder(WeatherApplication.getApplication());
-        builder.setSmallIcon(R.drawable.clear_day);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, mainActivityIntent, 0);

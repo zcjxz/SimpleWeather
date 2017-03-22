@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,20 +37,28 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
+import com.guowei.draw.simpleweather.bean.YoudaoBean;
 import com.guowei.draw.simpleweather.evens.StartLocalEvent;
 import com.guowei.draw.simpleweather.evens.StopLocalEvent;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
+import com.guowei.draw.simpleweather.notification.NotificationService;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
+import com.guowei.draw.simpleweather.utils.LanguageUtil;
 import com.guowei.draw.simpleweather.utils.LiveUtil;
+import com.guowei.draw.simpleweather.utils.NetworkUtil;
+import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.SpUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
 import com.guowei.draw.simpleweather.widget.ClockService;
+import com.guowei.guowei_general.ADSystem.MyDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +74,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -76,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //    @BindView(R.id.viewpager)
 //    ViewPager viewPager;
+
     @BindView(R.id.fl_scroll)
     FrameLayout flScroll;
     @BindView(R.id.collapsingToolbarLayout)
@@ -132,13 +143,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        boolean isRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
-        if (!isRunning){
+        boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
+        if (!isClockServiceRunning){
             Intent clockIntent=new Intent(this, ClockService.class);
             startService(clockIntent);
         }
+        boolean isNotificationServiceRunning = LiveUtil.isServiceRunning(LiveUtil.notification);
+        if (!isNotificationServiceRunning){
+            Intent notificationIntent=new Intent(this, NotificationService.class);
+            startService(notificationIntent);
+        }
+
     }
 
+    /**
+     * 启动后台服务
+     */
+    private void startBgService(){
+        boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
+        if (!isClockServiceRunning){
+            Intent clockIntent=new Intent(this, ClockService.class);
+            startService(clockIntent);
+        }
+        boolean isNotificationServiceRunning = LiveUtil.isServiceRunning(LiveUtil.notification);
+        if (!isNotificationServiceRunning){
+            Intent notificationIntent=new Intent(this, NotificationService.class);
+            startService(notificationIntent);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,28 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        viewPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), forecastList);
 //        viewPager.setAdapter(viewPagerAdapter);
         titleMenu.setOnClickListener(this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder()
-                            .url("http://guolin.tech/api/bing_pic")
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    final String url = response.body().string();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ImageLoadUtil.displayPicFromUrl(url, ivBg);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
 
 
         //动态权限
@@ -231,12 +242,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshListener);
         swipeRefreshListener.onRefresh();
-
+        //侧边栏点击监听
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_about:
+                        drawerLayout.closeDrawers();
                         startActivity(new Intent(MainActivity.this, AboutActivity.class));
                         break;
                 }
@@ -245,6 +257,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void setToolbarBg(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url("http://guolin.tech/api/bing_pic")
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    final String url = response.body().string();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ImageLoadUtil.displayPicFromUrl(url, ivBg);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
     /**
      * 为 DrawerLayout 布局设置状态栏透明
      *
@@ -270,6 +306,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void refresh() {
 //        startLocation();
         EventBus.getDefault().post(new StartLocalEvent());
+        setToolbarBg();
+        if (!NetworkUtil.isUseable()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(ResourcesUtil.getString(R.string.no_connection));
+            builder.setMessage(ResourcesUtil.getString(R.string.please_refresh_after_connected));
+            builder.setNegativeButton(ResourcesUtil.getString(R.string.confirm),null);
+            builder.create().show();
+        }
+        startBgService();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -361,7 +406,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
         } else {
-            super.onBackPressed();
+            MyDialog myDialog = new MyDialog(this);
+            myDialog.show();
         }
     }
 
@@ -411,14 +457,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
             currentPosition.append("getLocType:").append(bdLocation.getLocType()).append("\n");
             DebugUtil.debug("onReceiveLocation: \n" + currentPosition);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (bdLocation.getStreet() != null) {
-                        tvLocation.setText(bdLocation.getStreet());
+            if (LanguageUtil.isZh()) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bdLocation.getStreet() != null) {
+                            tvLocation.setText(bdLocation.getStreet());
+                        }
                     }
-                }
-            });
+                });
+            }else {
+                HttpUtils.getInstance().getFangyi(bdLocation.getStreet(), new Action1<YoudaoBean>() {
+                    @Override
+                    public void call(YoudaoBean youdaoBean) {
+                        tvLocation.setText(youdaoBean.getTranslation().get(0));
+                    }
+                });
+            }
             requestRealtimeWeather(longitude + "", latitude + "");
             SpUtil.postString(C.SP_NAME,C.KEY_LONGITUDE,longitude+"");
             SpUtil.postString(C.SP_NAME,C.KEY_LATITUDE,latitude+"");
@@ -442,13 +497,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (grantResults.length > 0) {
                     for (int result : grantResults) {
                         if (result != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(this, "同意定位权限才能获取当地的天气哦", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, ResourcesUtil.getString(R.string.location_permission), Toast.LENGTH_SHORT).show();
                         }
                     }
                     DebugUtil.debug("成功获取权限");
                     startLocation();
                 } else {
-                    Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, ResourcesUtil.getString(R.string.local_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -490,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DebugUtil.debug("显示toolbar数据");
         CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
         //Toolbar上的天气概况
-        tvTemplate.setText((int) result.getTemperature() + "℃");
+        tvTemplate.setText((int) result.getTemperature() + C.DU);
         SpUtil.postInt(C.SP_NAME,C.KEY_TEMP, (int) result.getTemperature());
         String skycon = TransformUtils.transformSkycon(result.getSkycon());
         tvSkycon.setText(skycon);

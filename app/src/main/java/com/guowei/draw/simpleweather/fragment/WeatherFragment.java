@@ -2,6 +2,7 @@ package com.guowei.draw.simpleweather.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.DailyAdapter;
 import com.guowei.draw.simpleweather.adapter.HourlyAdapter;
@@ -19,16 +22,21 @@ import com.guowei.draw.simpleweather.base.BaseFragment;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.HefengSearchBean;
 import com.guowei.draw.simpleweather.bean.HefengSuggestionBean;
+import com.guowei.draw.simpleweather.bean.YoudaoBean;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
+import com.guowei.draw.simpleweather.utils.LanguageUtil;
+import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
+import com.guowei.draw.simpleweather.utils.YoudaoUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 
 public class WeatherFragment extends BaseFragment{
@@ -81,6 +89,16 @@ public class WeatherFragment extends BaseFragment{
     TextView carwash;
     @BindView(R.id.car_wash_text)
     TextView carwashText;
+    @BindView(R.id.suggestion_card)
+    CardView suggestionCard;
+    @BindView(R.id.skycon_card)
+    CardView skyconCard;
+    @BindView(R.id.adView1)
+    AdView adView1;
+    @BindView(R.id.adView2)
+    AdView adView2;
+    @BindView(R.id.adView3)
+    AdView adView3;
 
     private View view;
     private Bundle arguments;
@@ -100,6 +118,14 @@ public class WeatherFragment extends BaseFragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         isPrepared=true;
+        //加载广告
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
+                .build();
+        adView1.loadAd(adRequest);
+        adView2.loadAd(adRequest);
+        adView3.loadAd(adRequest);
     }
 
     @Nullable
@@ -114,6 +140,8 @@ public class WeatherFragment extends BaseFragment{
      * @param forecastBean
      */
     private void showCardData(CaiForecastBean forecastBean){
+        skyconCard.setVisibility(View.VISIBLE);
+        suggestionCard.setVisibility(View.VISIBLE);
         DebugUtil.debug("开始加载数据");
         //第一个卡片
         CaiForecastBean.ResultBean result = forecastBean.getResult();
@@ -130,7 +158,7 @@ public class WeatherFragment extends BaseFragment{
         tempMin.setText(String.format("↓ %s ℃",Math.round(todayTempMin)));
         ImageLoadUtil.displayPicFromLocation(TransformUtils.transformIcon(todaySkycon),skyconIcon);
         tv_pm25.setText("PM 2.5: "+pm25+"μg/m³");
-        tv_aqi.setText("空气质量: "+TransformUtils.transformAQI(aqi));
+        tv_aqi.setText(ResourcesUtil.getString(R.string.air_quality)+" : "+TransformUtils.transformAQI(aqi));
         //第二个卡片---未来4小时的预报
         HourlyAdapter hourlyAdapter = new HourlyAdapter(forecastBean.getResult().getHourly());
         rcHourly.setAdapter(hourlyAdapter);
@@ -143,7 +171,6 @@ public class WeatherFragment extends BaseFragment{
 
     @Override
     protected void lazyLoad() {
-        DebugUtil.debug("lazyload");
         if (arguments.getBoolean("isLocal")){
             DebugUtil.debug("请求当地天气");
             //请求当地天气
@@ -200,20 +227,38 @@ public class WeatherFragment extends BaseFragment{
 
     private void showSuggestion(HefengSuggestionBean hefengSuggestionBean) {
         HefengSuggestionBean.HeWeather5Bean.SuggestionBean suggestions = hefengSuggestionBean.getHeWeather5().get(0).getSuggestion();
-        comfort.setText("舒适度   "+suggestions.getComf().getBrf());
-        comfortText.setText(suggestions.getComf().getTxt());
-        clothing.setText("穿衣   "+ suggestions.getDrsg().getBrf());
-        clothingText.setText(suggestions.getComf().getTxt());
-        ultraviolet.setText("紫外线   "+suggestions.getUv().getBrf());
-        ultravioletText.setText(suggestions.getUv().getTxt());
-        sports.setText("运动   "+suggestions.getSport().getBrf());
-        sportsText.setText(suggestions.getSport().getTxt());
-        cold.setText("感冒   "+suggestions.getFlu().getBrf());
-        coldText.setText(suggestions.getFlu().getTxt());
-        travel.setText("旅游   "+suggestions.getTrav().getBrf());
-        travelText.setText(suggestions.getTrav().getTxt());
-        carwash.setText("洗车   "+suggestions.getCw().getBrf());
-        carwashText.setText(suggestions.getCw().getTxt());
+        if (LanguageUtil.isZh()) {
+            comfort.setText(ResourcesUtil.getString(R.string.comfortable) + "   " + suggestions.getComf().getBrf());
+            comfortText.setText(suggestions.getComf().getTxt());
+            clothing.setText(ResourcesUtil.getString(R.string.clothing) + "   " + suggestions.getDrsg().getBrf());
+            clothingText.setText(suggestions.getComf().getTxt());
+            ultraviolet.setText(ResourcesUtil.getString(R.string.ultraviolet_rays) + "   " + suggestions.getUv().getBrf());
+            ultravioletText.setText(suggestions.getUv().getTxt());
+            sports.setText(ResourcesUtil.getString(R.string.sports) + "   " + suggestions.getSport().getBrf());
+            sportsText.setText(suggestions.getSport().getTxt());
+            cold.setText(ResourcesUtil.getString(R.string.cold) + "   " + suggestions.getFlu().getBrf());
+            coldText.setText(suggestions.getFlu().getTxt());
+            travel.setText(ResourcesUtil.getString(R.string.travel) + "   " + suggestions.getTrav().getBrf());
+            travelText.setText(suggestions.getTrav().getTxt());
+            carwash.setText(ResourcesUtil.getString(R.string.car_washing) + "   " + suggestions.getCw().getBrf());
+            carwashText.setText(suggestions.getCw().getTxt());
+        }else{
+            YoudaoUtil.getFangyi(suggestions.getComf().getBrf(),comfort,ResourcesUtil.getString(R.string.comfortable) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getComf().getTxt(),comfortText,"");
+            YoudaoUtil.getFangyi(suggestions.getDrsg().getBrf(),clothing,ResourcesUtil.getString(R.string.clothing) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getDrsg().getTxt(),clothingText,"");
+            YoudaoUtil.getFangyi(suggestions.getUv().getBrf(),ultraviolet,ResourcesUtil.getString(R.string.ultraviolet_rays) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getUv().getTxt(),ultravioletText,"");
+            YoudaoUtil.getFangyi(suggestions.getSport().getBrf(),sports,ResourcesUtil.getString(R.string.sports) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getSport().getTxt(),sportsText,"");
+            YoudaoUtil.getFangyi(suggestions.getFlu().getBrf(),cold,ResourcesUtil.getString(R.string.cold) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getFlu().getTxt(),coldText,"");
+            YoudaoUtil.getFangyi(suggestions.getTrav().getBrf(),travel,ResourcesUtil.getString(R.string.travel) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getTrav().getTxt(),travelText,"");
+            YoudaoUtil.getFangyi(suggestions.getCw().getBrf(),carwash,ResourcesUtil.getString(R.string.car_washing) + "   ");
+            YoudaoUtil.getFangyi(suggestions.getCw().getTxt(),carwashText,"");
+
+        }
     }
 
     /**

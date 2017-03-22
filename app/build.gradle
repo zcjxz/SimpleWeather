@@ -22,6 +22,8 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+
 }
 
 dependencies {
@@ -48,4 +50,9 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile project(':guowei_general')
+
+    compile 'com.google.firebase:firebase-ads:10.0.1'
+
 }
+apply plugin: 'com.google.gms.google-services'

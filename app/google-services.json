@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "539929395544",
+    "firebase_url": "https://choosecolor-f0619.firebaseio.com",
+    "project_id": "choosecolor-f0619",
+    "storage_bucket": "choosecolor-f0619.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539929395544:android:aba8846ffcb25a6b",
+        "android_client_info": {
+          "package_name": "com.guowei.draw.simpleweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539929395544-jlv7rvcmi2gu4nff9kaq4hr1pevu4l7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI7fcWB6vgfdP7wXkOL4LLcZzRBZ-93i0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

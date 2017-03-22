@@ -11,12 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.CardView
+            android:id="@+id/skycon_card"
+            android:visibility="gone"
             style="@style/MyCardView"
             app:cardCornerRadius="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <include layout="@layout/layout_skycon"/>
         </android.support.v7.widget.CardView>
+        <com.google.android.gms.ads.AdView
+        app:adSize="BANNER"
+        app:adUnitId="@string/banner_ad_unit_id"
+        android:id="@+id/adView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
         <android.support.v7.widget.CardView
             style="@style/MyCardView"
             app:cardCornerRadius="8dp"
@@ -29,6 +37,12 @@
 
             </android.support.v7.widget.RecyclerView>
         </android.support.v7.widget.CardView>
+        <com.google.android.gms.ads.AdView
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id"
+            android:id="@+id/adView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <android.support.v7.widget.CardView
             style="@style/MyCardView"
             app:cardCornerRadius="8dp"
@@ -41,7 +55,15 @@
 
             </android.support.v7.widget.RecyclerView>
         </android.support.v7.widget.CardView>
+        <com.google.android.gms.ads.AdView
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id"
+            android:id="@+id/adView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <android.support.v7.widget.CardView
+            android:id="@+id/suggestion_card"
+            android:visibility="gone"
             style="@style/MyCardView"
             app:cardCornerRadius="8dp"
             android:layout_width="match_parent"

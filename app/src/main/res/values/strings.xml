@@ -2,7 +2,7 @@
     <string name="app_name">SimpleWeather</string>
     <string name="clear_day">Clear Day</string>
     <string name="cloudy">Cloudy</string>
-    <string name="Raining">Raining</string>
+    <string name="raining">Raining</string>
     <string name="snow">Snow</string>
     <string name="clear_night">Clear Night</string>
     <string name="wind">Wind</string>
@@ -43,4 +43,23 @@
     <string name="aqi_serious_pollution">Serious pollution</string>
     <string name="image_from">Images from Bing</string>
     <string name="about_us">About Us</string>
+    <string name="location_permission">Agreed to locate permissions to access to local weather</string>
+    <string name="local_error">An unknown error occurred</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="day">th</string>
+    <string name="comfortable">Comfortable</string>
+    <string name="clothing">Clothing</string>
+    <string name="ultraviolet_rays">Ultraviolet rays</string>
+    <string name="sports">Sports</string>
+    <string name="cold">Cold</string>
+    <string name="travel">Travel</string>
+    <string name="car_washing">Car washing</string>
+    <string name="overcast">Overcast</string>
+    <string name="no_connection">Currently no network connection</string>
+    <string name="please_refresh_after_connected">Please refresh after connected to the Internet</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-4264047892026990/8449021665</string>
+
 </resources>

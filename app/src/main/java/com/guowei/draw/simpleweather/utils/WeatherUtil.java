@@ -43,7 +43,7 @@ public class WeatherUtil {
             @Override
             public void onNext(CaiRealTimeBean realTimeBean) {
                 updateWidget(realTimeBean);
-                updateNotification(realTimeBean);
+//                updateNotification(realTimeBean);
             }
         });
 
@@ -85,30 +85,34 @@ public class WeatherUtil {
 //            }
 //        });
 
-    public void updateNotification(CaiRealTimeBean realTime){
-        NotificationManagerCompat manager=NotificationManagerCompat.from(application);
-        CaiRealTimeBean.ResultBean result = realTime.getResult();
-        int temp = Math.round(result.getTemperature());
-        String skycon = TransformUtils.transformSkycon(result.getSkycon());
-        int icon = TransformUtils.transformIcon(result.getSkycon());
-        String aqi = TransformUtils.transformAQI(result.getAqi());
-        String speed = TransformUtils.transformSpeed(result.getWind().getSpeed());
-        String direction = TransformUtils.transformDirection(result.getWind().getDirection());
-        RemoteViews remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_notification);
-        remoteViews.setTextViewText(R.id.notification_temp,temp+C.DU);
-        remoteViews.setImageViewResource(R.id.notification_icon,icon);
-        remoteViews.setTextViewText(R.id.notification_skycon,skycon);
-        remoteViews.setTextViewText(R.id.notification_aqi,"空气质量："+aqi);
-        remoteViews.setTextViewText(R.id.notification_wind,direction+"   "+speed);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(WeatherApplication.getApplication());
-        builder.setSmallIcon(R.drawable.clear_day);
-        Intent mainActivityIntent = new Intent(application, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(application,
-                0, mainActivityIntent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setCustomContentView(remoteViews);
-//        builder.setCustomBigContentView(remoteViews);
-        Notification notification = builder.build();
-        manager.notify(C.NOTIFICATION_ID,notification);
-    }
+    /**
+     * 不用这个更新notification了，使用NotificationService来刷新
+     * @param realTime
+     */
+//    public void updateNotification(CaiRealTimeBean realTime){
+//        NotificationManagerCompat manager=NotificationManagerCompat.from(application);
+//        CaiRealTimeBean.ResultBean result = realTime.getResult();
+//        int temp = Math.round(result.getTemperature());
+//        String skycon = TransformUtils.transformSkycon(result.getSkycon());
+//        int icon = TransformUtils.transformIcon(result.getSkycon());
+//        String aqi = TransformUtils.transformAQI(result.getAqi());
+//        String speed = TransformUtils.transformSpeed(result.getWind().getSpeed());
+//        String direction = TransformUtils.transformDirection(result.getWind().getDirection());
+//        RemoteViews remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_notification);
+//        remoteViews.setTextViewText(R.id.notification_temp,temp+C.DU);
+//        remoteViews.setImageViewResource(R.id.notification_icon,icon);
+//        remoteViews.setTextViewText(R.id.notification_skycon,skycon);
+//        remoteViews.setTextViewText(R.id.notification_aqi,ResourcesUtil.getString(R.string.air_quality)+" : "+aqi);
+//        remoteViews.setTextViewText(R.id.notification_wind,direction+"   "+speed);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(WeatherApplication.getApplication());
+//        builder.setSmallIcon(R.drawable.clear_day);
+//        Intent mainActivityIntent = new Intent(application, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(application,
+//                0, mainActivityIntent, 0);
+//        builder.setContentIntent(pendingIntent);
+//        builder.setCustomContentView(remoteViews);
+////        builder.setCustomBigContentView(remoteViews);
+//        Notification notification = builder.build();
+//        manager.notify(C.NOTIFICATION_ID,notification);
+//    }
 }

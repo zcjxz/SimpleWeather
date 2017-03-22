@@ -41,9 +41,8 @@
                     <LinearLayout
                         android:layout_marginBottom="28dp"
                         android:gravity="right"
-                        android:layout_gravity="end"
                         android:orientation="horizontal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
                             android:layout_marginRight="8dp"
@@ -55,7 +54,7 @@
                             android:textSize="12sp"
                             android:gravity="top|end"
                             style="@style/whiteFont"
-                            android:layout_width="wrap_content"
+                            android:layout_width="31dp"
                             android:layout_height="wrap_content"
                             android:id="@+id/widget_wind"
                             />
@@ -82,7 +81,6 @@
 
                         <ImageView
                             android:id="@+id/widget_skycon"
-                            android:src="@drawable/clear_day"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_below="@+id/widget_time"

@@ -8,7 +8,8 @@ import com.guowei.draw.simpleweather.WeatherApplication;
 import java.util.List;
 
 public class LiveUtil {
-    public static final String clockservice ="clockservice";
+    public static final String clockservice ="Clockservice";
+    public static final String notification ="NotificationService";
     public static boolean isServiceRunning(String serviceName){
         ActivityManager activityManager = (ActivityManager) WeatherApplication.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(200);

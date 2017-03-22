@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
+import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.TimeUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
 
@@ -35,18 +37,18 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.DailyHolder>
     public void onBindViewHolder(DailyHolder holder, int position) {
         holder.forecastIcon.setImageResource(TransformUtils.transformIcon(dailyData.getSkycon().get(position).getValue()));
         if (position==0){
-            holder.forecastDate.setText("今天");
+            holder.forecastDate.setText(ResourcesUtil.getString(R.string.today));
         }else if (position==1){
-            holder.forecastDate.setText("明天");
+            holder.forecastDate.setText(ResourcesUtil.getString(R.string.tomorrow));
         }else{
-            holder.forecastDate.setText(TimeUtil.getINSTANCE().getTimeFormat("yyyy-MM-dd","dd",dailyData.getSkycon().get(position).getDate())+"日");
+            holder.forecastDate.setText(TimeUtil.getINSTANCE().getTimeFormat("yyyy-MM-dd","dd",dailyData.getSkycon().get(position).getDate())+ResourcesUtil.getString(R.string.day));
         }
         CaiForecastBean.ResultBean.DailyBean.TemperatureBeanX temperature = dailyData.getTemperature().get(position);
         double tempMax = temperature.getMax();
         double tempMin = temperature.getMin();
-        holder.forecastTemp.setText(Math.round(tempMax)+"℃-"+Math.round(tempMin)+"℃");
+        holder.forecastTemp.setText(Math.round(tempMax)+ C.DU+"-"+Math.round(tempMin)+C.DU);
         holder.forecastTxt.setText(
-                "空气质量："+TransformUtils.transformAQI(dailyData.getAqi().get(position).getAvg())+
+                ResourcesUtil.getString(R.string.air_quality)+" : "+TransformUtils.transformAQI(dailyData.getAqi().get(position).getAvg())+
                         "   "+TransformUtils.transformDirection(dailyData.getWind().get(position).getAvg().getDirection())+
                         " "+TransformUtils.transformSpeed(dailyData.getWind().get(position).getAvg().getSpeed())
         );

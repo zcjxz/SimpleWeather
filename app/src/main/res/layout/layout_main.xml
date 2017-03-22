@@ -28,9 +28,9 @@
                 <ImageView
                     android:id="@+id/iv_bg"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitXY" />
 
                 <android.support.v7.widget.Toolbar
 
@@ -43,7 +43,6 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
                         android:paddingTop="16dp">
 
                         <ImageView
@@ -113,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@id/tv_wind"
-                        android:text="图片来自Bing"
+                        android:text="@string/image_from"
                         android:theme="@style/whiteFont"/>
                 </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -125,11 +124,11 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
             <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+            <FrameLayout
+                android:id="@+id/fl_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <FrameLayout
-            android:id="@+id/fl_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

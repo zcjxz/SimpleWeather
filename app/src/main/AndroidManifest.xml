@@ -63,6 +63,8 @@
 
         <service android:name=".widget.ClockService" />
 
+        <service android:name=".notification.NotificationService"/>
+
         <activity android:name=".activity.AboutActivity"
             android:label="深圳国威科技有限公司"></activity>
 

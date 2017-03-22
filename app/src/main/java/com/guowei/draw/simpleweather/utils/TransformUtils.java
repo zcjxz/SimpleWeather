@@ -10,43 +10,43 @@ public class TransformUtils {
      */
     public static String transformSpeed(double speed){
         if (speed<=2){
-            return "无风";
+            return ResourcesUtil.getString(R.string.none_wind);
         }else if (speed<=6){
-            return "一级";
+            return ResourcesUtil.getString(R.string.force_1);
         }else if (speed<=12){
-            return "二级";
+            return ResourcesUtil.getString(R.string.force_2);
         }else if (speed<=19){
-            return "三级";
+            return ResourcesUtil.getString(R.string.force_3);
         }else if (speed<=30){
-            return "四级";
+            return ResourcesUtil.getString(R.string.force_4);
         }else if (speed<=40){
-            return "五级";
+            return ResourcesUtil.getString(R.string.force_5);
         }else if (speed<=51){
-            return "六级";
+            return ResourcesUtil.getString(R.string.force_6);
         }else if (speed<=62){
-            return "七级";
+            return ResourcesUtil.getString(R.string.force_7);
         }else if (speed<=75){
-            return "八级";
+            return ResourcesUtil.getString(R.string.force_8);
         }else if (speed<=87){
-            return "九级";
+            return ResourcesUtil.getString(R.string.force_9);
         }else if (speed<=103){
-            return "十级";
+            return ResourcesUtil.getString(R.string.force_10);
         }else if (speed<=117){
-            return "十一级";
+            return ResourcesUtil.getString(R.string.force_11);
         }else if (speed<=132){
-            return "十二级";
+            return ResourcesUtil.getString(R.string.force_12);
         }else if (speed<=149){
-            return "十三级";
+            return ResourcesUtil.getString(R.string.force_13);
         }else if (speed<=166){
-            return "十四级";
+            return ResourcesUtil.getString(R.string.force_14);
         }else if (speed<=183){
-            return "十五级";
+            return ResourcesUtil.getString(R.string.force_15);
         }else if (speed<=201){
-            return "十六级";
+            return ResourcesUtil.getString(R.string.force_16);
         }else if (speed<=220){
-            return "十七级";
+            return ResourcesUtil.getString(R.string.force_17);
         }else{
-            return "十八级";
+            return ResourcesUtil.getString(R.string.force_18);
         }
     }
 
@@ -57,21 +57,21 @@ public class TransformUtils {
      */
     public static String transformDirection(double direction){
         if (direction<=22.5){
-            return "北风";
+            return ResourcesUtil.getString(R.string.north_wind);
         }else if (direction<=67.5){
-            return "东北风";
+            return ResourcesUtil.getString(R.string.northeast_wind);
         }else if (direction<=112.5){
-            return "东风";
+            return ResourcesUtil.getString(R.string.east_wind);
         }else if (direction<=157.5){
-            return "东南风";
+            return ResourcesUtil.getString(R.string.southeast_wind);
         }else if (direction<=202.5){
-            return "南风";
+            return ResourcesUtil.getString(R.string.south_wind);
         }else if (direction<=247.5){
-            return  "西南风";
+            return  ResourcesUtil.getString(R.string.southwest_wind);
         }else if (direction<=292.5){
-            return "西风";
+            return ResourcesUtil.getString(R.string.west_wind);
         }else {
-            return "北风";
+            return ResourcesUtil.getString(R.string.none_wind);
         }
     }
 
@@ -110,25 +110,25 @@ public class TransformUtils {
      */
     public static String transformSkycon(String skycon){
         if (skycon.equals("CLEAR_DAY")){
-            return "晴";
+            return ResourcesUtil.getString(R.string.clear_day);
         }else if (skycon.equals("CLEAR_NIGHT")){
-            return "晴夜";
+            return ResourcesUtil.getString(R.string.clear_night);
         }else if (skycon.equals("PARTLY_CLOUDY_DAY")){
-            return "多云";
+            return ResourcesUtil.getString(R.string.cloudy);
         }else if (skycon.equals("PARTLY_CLOUDY_NIGHT")){
-            return "多云";
+            return ResourcesUtil.getString(R.string.cloudy);
         }else if (skycon.equals("CLOUDY")){
-            return "阴";
+            return ResourcesUtil.getString(R.string.cloudy);
         }else if (skycon.equals("RAIN")){
-            return "雨";
+            return ResourcesUtil.getString(R.string.raining);
         }else if (skycon.equals("SNOW")){
-            return "雪";
+            return ResourcesUtil.getString(R.string.snow);
         }else if (skycon.equals("WIND")){
-            return "风";
+            return ResourcesUtil.getString(R.string.wind);
         }else if (skycon.equals("FOG")){
-            return "雾";
+            return ResourcesUtil.getString(R.string.fog);
         }
-        return "晴";
+        return ResourcesUtil.getString(R.string.cloudy);
     }
 
     /**
@@ -138,17 +138,17 @@ public class TransformUtils {
      */
     public static String transformAQI(double aqi){
         if (aqi<=50){
-            return "优";
+            return ResourcesUtil.getString(R.string.aqi_eximious);
         }else if (aqi<=100){
-            return "良";
+            return ResourcesUtil.getString(R.string.aqi_fine);
         }else if (aqi<=150){
-            return "轻度污染";
+            return ResourcesUtil.getString(R.string.aqi_lightly_pollution);
         }else if (aqi<=200){
-            return "中度污染";
+            return ResourcesUtil.getString(R.string.aqi_middle_pollution);
         }else if (aqi<=300){
-            return "重度污染";
+            return ResourcesUtil.getString(R.string.aqi_serious_pollution);
         }else{
-            return "严重污染";
+            return ResourcesUtil.getString(R.string.aqi_eximious);
         }
     }
 
@@ -159,7 +159,7 @@ public class TransformUtils {
      */
     public static String transformCityName(String city){
         if (city.length()<=1){
-            return "错误";
+            return "error";
         }
         return city.substring(0, city.length() - 1);
     }
