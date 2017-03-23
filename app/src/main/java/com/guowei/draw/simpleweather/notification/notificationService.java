@@ -30,7 +30,7 @@ import rx.Subscriber;
 public class NotificationService extends Service{
 
     private WeatherApplication application;
-    private Timer weatherTimer;
+    private Timer weatherTimer=null;
 
     @Nullable
     @Override
@@ -104,7 +104,7 @@ public class NotificationService extends Service{
         String speed = TransformUtils.transformSpeed(result.getWind().getSpeed());
         String direction = TransformUtils.transformDirection(result.getWind().getDirection());
         RemoteViews remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_notification);
-        remoteViews.setTextViewText(R.id.notification_temp,temp+C.DU);
+        remoteViews.setTextViewText(R.id.notification_temp,TransformUtils.transformTemp(temp));
         remoteViews.setImageViewResource(R.id.notification_icon,icon);
         remoteViews.setTextViewText(R.id.notification_skycon,skycon);
         remoteViews.setTextViewText(R.id.notification_aqi, ResourcesUtil.getString(R.string.air_quality)+" : "+aqi);

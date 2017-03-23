@@ -8,5 +8,7 @@ public class C {
     public static String KEY_LATITUDE="latitude";
     public static String KEY_TEMP="temp";
     public static int NOTIFICATION_ID=135;
-    public static String DU="℃";
+    public static String Centigrade="℃";
+    public static String Fahrenheit="℉";
+    public static String DEGREE="degree";
 }

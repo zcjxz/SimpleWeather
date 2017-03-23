@@ -21,10 +21,14 @@
     <style name="suggestBrf">
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="suggestText">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:layout_marginRight">8dp</item>
+    </style>
+    <style name="MainActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--Customize your theme here. -->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
 </resources>

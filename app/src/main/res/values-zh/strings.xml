@@ -56,11 +56,15 @@
     <string name="cold">感冒</string>
     <string name="travel">旅游</string>
     <string name="car_washing">洗车</string>
-    <string name="overcast">yin</string>
+    <string name="overcast">阴</string>
     <string name="no_connection">当前无网络连接</string>
     <string name="please_refresh_after_connected">请联网后刷新</string>
     <string name="confirm">确定</string>
-
     <string name="banner_ad_unit_id">ca-app-pub-4264047892026990/8449021665</string>
-
+    <string name="setting">设置</string>
+    <string name="degree">计量单位</string>
+    <string-array name="degree_array">
+        <item>摄氏度（℃）</item>
+        <item>华氏度（℉）</item>
+    </string-array>
 </resources>

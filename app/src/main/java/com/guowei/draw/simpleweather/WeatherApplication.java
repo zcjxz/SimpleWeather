@@ -6,6 +6,7 @@ import android.app.Application;
 public class WeatherApplication extends Application{
     public static WeatherApplication application;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

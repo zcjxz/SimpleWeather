@@ -1,6 +1,8 @@
 package com.guowei.draw.simpleweather.utils;
 
+import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
+import com.guowei.draw.simpleweather.WeatherApplication;
 
 public class TransformUtils {
     /**
@@ -162,5 +164,16 @@ public class TransformUtils {
             return "error";
         }
         return city.substring(0, city.length() - 1);
+    }
+
+    public static String transformTemp(int temp){
+        String degree = SpUtil.getString(C.SP_NAME, C.DEGREE, "℃");
+        switch (degree){
+            case "℃":
+                return temp+C.Centigrade;
+            case "℉":
+                return (int)(temp*1.8+32)+C.Fahrenheit;
+        }
+        return temp+C.Centigrade;
     }
 }

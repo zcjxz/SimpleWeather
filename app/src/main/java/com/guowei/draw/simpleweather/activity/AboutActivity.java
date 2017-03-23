@@ -27,6 +27,7 @@ public class AboutActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
+                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
                 .build();
         adView.loadAd(adRequest);
         ActionBar supportActionBar = getSupportActionBar();

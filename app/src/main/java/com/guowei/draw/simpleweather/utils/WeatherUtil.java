@@ -56,7 +56,7 @@ public class WeatherUtil {
         remoteViews = new RemoteViews(application.getPackageName(), R.layout.layout_widget);
         componentName = new ComponentName(application, MyWidgetProvider.class);
         CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
-        remoteViews.setTextViewText(R.id.widget_temp,Math.round(result.getTemperature())+"℃");
+        remoteViews.setTextViewText(R.id.widget_temp,TransformUtils.transformTemp(Math.round(result.getTemperature())));
         SpUtil.postInt(C.SP_NAME,C.KEY_TEMP, (int) result.getTemperature());
         remoteViews.setTextViewText(R.id.widget_wind,TransformUtils.transformSpeed(result.getWind().getSpeed()));
         remoteViews.setImageViewResource(R.id.widget_skycon,TransformUtils.transformIcon(result.getSkycon()));

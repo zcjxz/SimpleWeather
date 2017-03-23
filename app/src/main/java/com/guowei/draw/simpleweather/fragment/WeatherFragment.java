@@ -122,6 +122,7 @@ public class WeatherFragment extends BaseFragment{
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
+                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
                 .build();
         adView1.loadAd(adRequest);
         adView2.loadAd(adRequest);
@@ -153,9 +154,9 @@ public class WeatherFragment extends BaseFragment{
         double todayTempAvg = todayTemp.getAvg();
         double todayTempMax = todayTemp.getMax();
         double todayTempMin = todayTemp.getMin();
-        template.setText(String.format("%s℃",Math.round(todayTempAvg)));
-        tempMax.setText(String.format("↑ %s ℃",Math.round(todayTempMax)));
-        tempMin.setText(String.format("↓ %s ℃",Math.round(todayTempMin)));
+        template.setText(String.format(TransformUtils.transformTemp((int) Math.round(todayTempAvg))));
+        tempMax.setText(String.format("↑ "+TransformUtils.transformTemp((int) Math.round(todayTempMax))));
+        tempMin.setText(String.format("↓ "+TransformUtils.transformTemp((int) Math.round(todayTempMin))));
         ImageLoadUtil.displayPicFromLocation(TransformUtils.transformIcon(todaySkycon),skyconIcon);
         tv_pm25.setText("PM 2.5: "+pm25+"μg/m³");
         tv_aqi.setText(ResourcesUtil.getString(R.string.air_quality)+" : "+TransformUtils.transformAQI(aqi));

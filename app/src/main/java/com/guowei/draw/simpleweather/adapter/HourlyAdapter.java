@@ -52,7 +52,12 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.HourlyHold
         skyconDrawable.setBounds(0,0,drawableWidth,drawableWidth);
         holder.time.setText(TimeUtil.getINSTANCE().getTime(hourlyData.getSkycon().get(position).getDatetime()));
         holder.time.setCompoundDrawables(timeDrawable,null,null,null);
-        holder.template.setText((int) Math.round(hourlyData.getTemperature().get(position).getValue())+"℃");
+        holder.template.setText(TransformUtils.transformTemp(
+                (int) Math.round(
+                        hourlyData.getTemperature().get(position).getValue()
+                    )
+                )
+        );
         holder.template.setCompoundDrawables(tempDrawable,null,null,null);
         holder.skycon.setText(TransformUtils.transformSkycon(skyconString));
         holder.skycon.setCompoundDrawables(skyconDrawable,null,null,null);

@@ -46,7 +46,7 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.DailyHolder>
         CaiForecastBean.ResultBean.DailyBean.TemperatureBeanX temperature = dailyData.getTemperature().get(position);
         double tempMax = temperature.getMax();
         double tempMin = temperature.getMin();
-        holder.forecastTemp.setText(Math.round(tempMax)+ C.DU+"-"+Math.round(tempMin)+C.DU);
+        holder.forecastTemp.setText(TransformUtils.transformTemp((int)Math.round(tempMax))+"-"+TransformUtils.transformTemp((int)Math.round(tempMin)));
         holder.forecastTxt.setText(
                 ResourcesUtil.getString(R.string.air_quality)+" : "+TransformUtils.transformAQI(dailyData.getAqi().get(position).getAvg())+
                         "   "+TransformUtils.transformDirection(dailyData.getWind().get(position).getAvg().getDirection())+

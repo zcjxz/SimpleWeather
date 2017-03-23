@@ -1,6 +1,7 @@
 package com.guowei.draw.simpleweather.activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -49,6 +51,7 @@ import com.guowei.draw.simpleweather.evens.StopLocalEvent;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.notification.NotificationService;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
+import com.guowei.draw.simpleweather.utils.DensityUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
 import com.guowei.draw.simpleweather.utils.LanguageUtil;
@@ -143,16 +146,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
-        if (!isClockServiceRunning){
-            Intent clockIntent=new Intent(this, ClockService.class);
-            startService(clockIntent);
-        }
-        boolean isNotificationServiceRunning = LiveUtil.isServiceRunning(LiveUtil.notification);
-        if (!isNotificationServiceRunning){
-            Intent notificationIntent=new Intent(this, NotificationService.class);
-            startService(notificationIntent);
-        }
+        swipeRefreshListener.onRefresh();
+        startBgService();
 
     }
 
@@ -160,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 启动后台服务
      */
     private void startBgService(){
+
         boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
         if (!isClockServiceRunning){
             Intent clockIntent=new Intent(this, ClockService.class);
@@ -177,8 +173,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        setTranslucentForDrawerLayout(this, drawerLayout);
+
         setSupportActionBar(toolbar);
+        setTranslucentForDrawerLayout(this, drawerLayout,toolbar);
         //toolbar不显示标题
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -241,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshListener);
-        swipeRefreshListener.onRefresh();
+
         //侧边栏点击监听
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -250,6 +247,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_about:
                         drawerLayout.closeDrawers();
                         startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                        break;
+                    case R.id.nav_setting:
+                        drawerLayout.closeDrawers();
+                        startActivity(new Intent(MainActivity.this,SettingActivity.class));
                         break;
                 }
                 return true;
@@ -281,14 +282,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }).start();
     }
+
+
     /**
      * 为 DrawerLayout 布局设置状态栏透明
-     *
-     * @param activity     需要设置的activity
+     *  @param activity     需要设置的activity
      * @param drawerLayout DrawerLayout
+     * @param toolbar
      */
-    public static void setTranslucentForDrawerLayout(Activity activity, DrawerLayout drawerLayout) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+    public static void setTranslucentForDrawerLayout(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             // 设置状态栏透明
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 设置内容布局属性
@@ -300,6 +303,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             vg.setFitsSystemWindows(false);
             // 设置 DrawerLayout 属性
             drawerLayout.setFitsSystemWindows(false);
+            toolbar.setPadding(0, DensityUtil.dip2px(16),0,0);
+        }else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT){
+
         }
     }
 
@@ -480,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             locationFragment.setLocation(bdLocation);
             setSwipeRefreshLayoutOff();
             EventBus.getDefault().post(new StopLocalEvent());
-
+            startBgService();
         }
 
         @Override
@@ -545,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DebugUtil.debug("显示toolbar数据");
         CaiRealTimeBean.ResultBean result = realTimeBean.getResult();
         //Toolbar上的天气概况
-        tvTemplate.setText((int) result.getTemperature() + C.DU);
+        tvTemplate.setText(TransformUtils.transformTemp((int) result.getTemperature()));
         SpUtil.postInt(C.SP_NAME,C.KEY_TEMP, (int) result.getTemperature());
         String skycon = TransformUtils.transformSkycon(result.getSkycon());
         tvSkycon.setText(skycon);
