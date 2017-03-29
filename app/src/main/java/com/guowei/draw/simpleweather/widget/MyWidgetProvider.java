@@ -15,6 +15,7 @@ import com.guowei.draw.simpleweather.activity.MainActivity;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.DrawUtils;
+import com.guowei.draw.simpleweather.utils.LiveUtil;
 import com.guowei.draw.simpleweather.utils.WeatherUtil;
 
 
@@ -24,13 +25,16 @@ public class MyWidgetProvider extends AppWidgetProvider{
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.i(TAG, "onUpdate: ");
-        context.startService(new Intent(context,ClockService.class));
+        if (!LiveUtil.isServiceRunning(LiveUtil.clockservice)){
+            context.startService(new Intent(context,ClockService.class));
+        }
+        context.sendBroadcast(new Intent(C.UPDATE_WEATHER));
         Intent mainActivityIntent= new Intent(context, MainActivity.class);
         PendingIntent pending=PendingIntent.getActivity(context,0,mainActivityIntent,0);
         RemoteViews remoteViews=new RemoteViews(context.getPackageName(), R.layout.layout_widget);
         remoteViews.setOnClickPendingIntent(R.id.widget_root,pending);
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        widgetManager.updateAppWidget(appWidgetIds,remoteViews);
+        widgetManager.updateAppWidget(appWidgetIds[0],remoteViews);
     }
 
     @Override

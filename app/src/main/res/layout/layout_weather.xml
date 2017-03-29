@@ -30,12 +30,12 @@
             app:cardCornerRadius="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView
+            <com.guowei.draw.simpleweather.view.NoScrollRecycleView
                 android:id="@+id/rc_hourly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </android.support.v7.widget.RecyclerView>
+            </com.guowei.draw.simpleweather.view.NoScrollRecycleView>
         </android.support.v7.widget.CardView>
         <com.google.android.gms.ads.AdView
             app:adSize="BANNER"
@@ -48,12 +48,12 @@
             app:cardCornerRadius="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView
+            <com.guowei.draw.simpleweather.view.NoScrollRecycleView
                 android:id="@+id/rc_daily"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </android.support.v7.widget.RecyclerView>
+            </com.guowei.draw.simpleweather.view.NoScrollRecycleView>
         </android.support.v7.widget.CardView>
         <com.google.android.gms.ads.AdView
             app:adSize="BANNER"

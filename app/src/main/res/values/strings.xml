@@ -66,4 +66,10 @@
         <item>Degree Centigrade ( ℃ )</item>
         <item>Degree Fahrenheit ( ℉ )</item>
     </string-array>
+    <string name="btn_yes">YES</string>
+    <string name="btn_no">NO</string>
+    <string name="btn_more">MORE</string>
+    <string name="is_exit">Is Exit ?</string>
+    <string name="company_name">GUO_WEI</string>
+
 </resources>

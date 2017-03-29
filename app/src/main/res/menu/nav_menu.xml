@@ -5,6 +5,7 @@
             android:icon="@drawable/about"
             android:title="@string/about_us"/>
         <item android:id="@+id/nav_setting"
-            android:title="设置"/>
+            android:icon="@drawable/setting"
+            android:title="@string/setting"/>
     </group>
 </menu>

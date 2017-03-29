@@ -3,6 +3,10 @@ package com.guowei.draw.simpleweather.activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -10,28 +14,40 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.R;
+import com.guowei.draw.simpleweather.utils.AdsDialogUtil;
+import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AboutActivity extends AppCompatActivity {
-    @BindView(R.id.gs_name)
-    TextView gsName;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.company_name)
+    TextView companyName;
+    @BindView(R.id.company_email)
+    TextView companyEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
-                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
-                .build();
-        adView.loadAd(adRequest);
+        AdsDialogUtil.setBannerAds(adView);
         ActionBar supportActionBar = getSupportActionBar();
         supportActionBar.setDisplayHomeAsUpEnabled(true);
+
+        SpannableStringBuilder webSpannable = new SpannableStringBuilder("官方网站：www.guowei.com");
+        webSpannable.setSpan(new ForegroundColorSpan(ResourcesUtil.getColor(R.color.colorBlue)),
+                "官方网站：".length(),
+                "官方网站：www.guowei.com".length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder emailSpannable = new SpannableStringBuilder("官方网站：www.guowei.com");
+        emailSpannable.setSpan(new ForegroundColorSpan(ResourcesUtil.getColor(R.color.colorBlue)),
+                "官方网站：".length(),
+                "官方网站：www.guowei.com".length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        companyEmail.setText(webSpannable);
+        companyName.setText(emailSpannable);
     }
 
     @Override

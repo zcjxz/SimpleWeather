@@ -67,7 +67,7 @@
 
         <activity
             android:name=".activity.AboutActivity"
-            android:label="深圳国威科技有限公司" />
+            android:label="@string/company_name" />
 
         <receiver android:name=".widget.LiveReceiver">
             <intent-filter>

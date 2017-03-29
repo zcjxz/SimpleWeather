@@ -39,6 +39,8 @@ public class HttpUtils {
 
     private static HttpUtils INSTANCE;
 
+    private static final String TAG="zcj_http";
+
     public HttpUtils(){}
     public static synchronized HttpUtils getInstance(){
         if (INSTANCE==null){
@@ -92,6 +94,7 @@ public class HttpUtils {
     }
 
     public void getCaiRealTimeWeather(String longitude, String latitude, Subscriber<CaiRealTimeBean> subscriber){
+        DebugUtil.debug(TAG,"caiRealTime");
         createCaiRetrofit();
         Observable<CaiRealTimeBean> observable = caiyunServer.getRealTimeWeather(cai_key, longitude, latitude);
         observable.subscribeOn(Schedulers.io())
@@ -99,6 +102,7 @@ public class HttpUtils {
                 .subscribe(subscriber);
     }
     public void getCaiForecast(String longitude, String latitude, Subscriber<CaiForecastBean> subscriber){
+        DebugUtil.debug(TAG,"caiForecast");
         createCaiRetrofit();
         Observable<CaiForecastBean> observable = caiyunServer.getForecastWeather(cai_key, longitude, latitude);
         observable.subscribeOn(Schedulers.io())
@@ -112,6 +116,7 @@ public class HttpUtils {
      * @param subscriber
      */
     public void getHefengCity(String city, Subscriber<HefengSearchBean> subscriber){
+        DebugUtil.debug(TAG,"hefengCity");
         createHefengRetrofit();
         Observable<HefengSearchBean> observable = heFengServer.getHefengSearch(city, hefeng_key);
         observable.subscribeOn(Schedulers.io())
@@ -119,6 +124,7 @@ public class HttpUtils {
                 .subscribe(subscriber);
     }
     public void getHefengSuggestion(String cityId, Subscriber<HefengSuggestionBean> subscriber){
+        DebugUtil.debug(TAG,"hefengSuggestion");
         createHefengRetrofit();
         Observable<HefengSuggestionBean> observable=heFengServer.getHefengSuggestion(cityId, hefeng_key);
         observable.subscribeOn(Schedulers.io())
@@ -126,6 +132,7 @@ public class HttpUtils {
                 .subscribe(subscriber);
     }
     public void getFangyi(String query,Action1<YoudaoBean> subscriber){
+        DebugUtil.debug(TAG,"fangyi");
         createYoudaoRetrofit();
         Observable<YoudaoBean> observable = youdaoServer.getFangYi(youdao_keyFrom, youdao_key,
                 youdao_type, youdao_doctype, youdao_only, youdao_version, query);

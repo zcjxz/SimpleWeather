@@ -3,6 +3,8 @@ package com.guowei.draw.simpleweather.activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -24,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +53,7 @@ import com.guowei.draw.simpleweather.evens.StartLocalEvent;
 import com.guowei.draw.simpleweather.evens.StopLocalEvent;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.notification.NotificationService;
+import com.guowei.draw.simpleweather.utils.AdsDialogUtil;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.DensityUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
@@ -61,13 +65,16 @@ import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.SpUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
 import com.guowei.draw.simpleweather.widget.ClockService;
+import com.guowei.guowei_general.ADSystem.MoreActivity;
 import com.guowei.guowei_general.ADSystem.MyDialog;
+import com.guowei.guowei_general.ADSystem.XMLUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,19 +131,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WeatherFragment locationFragment;
     private SwipeRefreshLayout.OnRefreshListener swipeRefreshListener;
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -146,8 +140,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        swipeRefreshListener.onRefresh();
-        startBgService();
+        boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
+        if (!isClockServiceRunning){
+            Intent clockIntent=new Intent(this, ClockService.class);
+            startService(clockIntent);
+        }
+        boolean isNotificationServiceRunning = LiveUtil.isServiceRunning(LiveUtil.notification);
+        if (!isNotificationServiceRunning){
+            Intent notificationIntent=new Intent(this, NotificationService.class);
+            startService(notificationIntent);
+        }
 
     }
 
@@ -155,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 启动后台服务
      */
     private void startBgService(){
-
         boolean isClockServiceRunning = LiveUtil.isServiceRunning(LiveUtil.clockservice);
         if (!isClockServiceRunning){
             Intent clockIntent=new Intent(this, ClockService.class);
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshListener);
-
+//        swipeRefreshListener.onRefresh();
         //侧边栏点击监听
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -256,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             }
         });
+        swipeRefreshListener.onRefresh();
     }
 
     private void setToolbarBg(){
@@ -317,10 +319,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(ResourcesUtil.getString(R.string.no_connection));
             builder.setMessage(ResourcesUtil.getString(R.string.please_refresh_after_connected));
-            builder.setNegativeButton(ResourcesUtil.getString(R.string.confirm),null);
-            builder.create().show();
+            builder.setPositiveButton(ResourcesUtil.getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.show();
         }
-        startBgService();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -407,14 +415,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers();
-        } else {
-            MyDialog myDialog = new MyDialog(this);
-            myDialog.show();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawers();
+            } else {
+                exit();
+            }
+            return false;
         }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        AdsDialogUtil.showAdsDialog(this, new AdsDialogUtil.AdsDialogListener() {
+            @Override
+            public void onYesPress(Dialog dialog) {
+                dialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void onMorePress(Dialog dialog) {
+                MainActivity.this.startActivity(
+                        new Intent(MainActivity.this,MoreActivity.class)
+                                .putExtra(
+                                        "values",(Serializable) XMLUtils.getAppBeans(MainActivity.this)
+                                )
+                );
+            }
+
+            @Override
+            public void onNoPress(Dialog dialog) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private enum CollapsingToolbarLayoutState {
@@ -444,25 +481,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 EventBus.getDefault().post(new StartLocalEvent());
                 setSwipeRefreshLayoutOff();
             }
-            StringBuilder currentPosition = new StringBuilder();
-            double latitude = bdLocation.getLatitude();
-            currentPosition.append("纬度：").append(latitude).append("\n");
-            double longitude = bdLocation.getLongitude();
-            currentPosition.append("经度：").append(longitude).append("\n");
-            currentPosition.append("定位方式：");
-            if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
-                currentPosition.append("GPS");
-            } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
-                currentPosition.append("网络");
-            }
-            currentPosition.append("\n");
-            currentPosition.append("省：").append(bdLocation.getProvince()).append("\n");
-            currentPosition.append("市：").append(bdLocation.getCity()).append("\n");
-            currentPosition.append("区：").append(bdLocation.getDistrict()).append("\n");
-            currentPosition.append("街道：").append(bdLocation.getStreet()).append("\n");
-            currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
-            currentPosition.append("getLocType:").append(bdLocation.getLocType()).append("\n");
-            DebugUtil.debug("onReceiveLocation: \n" + currentPosition);
+
             if (LanguageUtil.isZh()) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -480,6 +499,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
             }
+            double latitude = bdLocation.getLatitude();
+            double longitude = bdLocation.getLongitude();
             requestRealtimeWeather(longitude + "", latitude + "");
             SpUtil.postString(C.SP_NAME,C.KEY_LONGITUDE,longitude+"");
             SpUtil.postString(C.SP_NAME,C.KEY_LATITUDE,latitude+"");
@@ -522,6 +543,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param latitude
      */
     private void requestRealtimeWeather(String longitude, String latitude) {
+        DebugUtil.debug("zcj_http","requestRealtimeWeather");
         HttpUtils.getInstance().getCaiRealTimeWeather(longitude + "", latitude + "", new Subscriber<CaiRealTimeBean>() {
 
             @Override
@@ -543,7 +565,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-
+    private void debugLocal(BDLocation bdLocation){
+        StringBuilder currentPosition = new StringBuilder();
+        double latitude = bdLocation.getLatitude();
+        currentPosition.append("纬度：").append(latitude).append("\n");
+        double longitude = bdLocation.getLongitude();
+        currentPosition.append("经度：").append(longitude).append("\n");
+        currentPosition.append("定位方式：");
+        if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
+            currentPosition.append("GPS");
+        } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
+            currentPosition.append("网络");
+        }
+        currentPosition.append("\n");
+        currentPosition.append("省：").append(bdLocation.getProvince()).append("\n");
+        currentPosition.append("市：").append(bdLocation.getCity()).append("\n");
+        currentPosition.append("区：").append(bdLocation.getDistrict()).append("\n");
+        currentPosition.append("街道：").append(bdLocation.getStreet()).append("\n");
+        currentPosition.append("城市代码： ").append(bdLocation.getCityCode()).append("\n");
+        currentPosition.append("getLocType:").append(bdLocation.getLocType()).append("\n");
+        DebugUtil.debug("onReceiveLocation: \n" + currentPosition);
+    }
     /**
      * 显示toolbar数据
      */

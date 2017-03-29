@@ -23,6 +23,7 @@ import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.HefengSearchBean;
 import com.guowei.draw.simpleweather.bean.HefengSuggestionBean;
 import com.guowei.draw.simpleweather.bean.YoudaoBean;
+import com.guowei.draw.simpleweather.utils.AdsDialogUtil;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ImageLoadUtil;
@@ -119,14 +120,9 @@ public class WeatherFragment extends BaseFragment{
         super.onActivityCreated(savedInstanceState);
         isPrepared=true;
         //加载广告
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
-                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
-                .build();
-        adView1.loadAd(adRequest);
-        adView2.loadAd(adRequest);
-        adView3.loadAd(adRequest);
+        AdsDialogUtil.setBannerAds(adView1);
+        AdsDialogUtil.setBannerAds(adView2);
+        AdsDialogUtil.setBannerAds(adView3);
     }
 
     @Nullable
@@ -315,6 +311,7 @@ public class WeatherFragment extends BaseFragment{
      * 请求天气预报
      */
     public void requestForecast(String longitude,String latitude){
+        DebugUtil.debug("zcj_http","requestForecast");
         HttpUtils.getInstance().getCaiForecast(longitude, latitude, new Subscriber<CaiForecastBean>() {
             @Override
             public void onCompleted() {

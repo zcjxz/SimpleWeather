@@ -29,12 +29,11 @@ public class SettingActivity extends AppCompatActivity {
         ActionBar supportActionBar = getSupportActionBar();
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         String degreeString = SpUtil.getString(C.SP_NAME, C.DEGREE, C.Centigrade);
-        String[] stringArray = getResources().getStringArray(R.array.degree_array);
         int degreeIndex=0;
-        for (int i=0;i<stringArray.length;i++){
-            if (degreeString.equals(stringArray[i])){
-                degreeIndex=i;
-            }
+        if (degreeString.equals("℃")){
+            degreeIndex=0;
+        }else if(degreeString.equals("℉")){
+            degreeIndex=1;
         }
         degreeSpinner.setSelection(degreeIndex);
         degreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

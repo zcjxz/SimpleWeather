@@ -67,4 +67,9 @@
         <item>摄氏度（℃）</item>
         <item>华氏度（℉）</item>
     </string-array>
+    <string name="btn_yes">是</string>
+    <string name="btn_no">否</string>
+    <string name="btn_more">更多</string>
+    <string name="is_exit">是否退出？</string>
+    <string name="company_name">深圳国威科技有限公司</string>
 </resources>

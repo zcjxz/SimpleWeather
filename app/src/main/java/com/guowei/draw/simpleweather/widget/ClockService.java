@@ -36,6 +36,9 @@ public class ClockService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        if (clockTimer!=null&&weatherTimer!=null){
+//            return Service.START_STICKY;
+//        }
         if (clockTimer != null) {
             clockTimer.cancel();
             clockTimer = null;
