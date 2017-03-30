@@ -16,11 +16,15 @@ import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.WeatherApplication;
 import com.guowei.draw.simpleweather.activity.MainActivity;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
+import com.guowei.draw.simpleweather.evens.UpdateNotificationEvent;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
 import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.SpUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,6 +45,7 @@ public class NotificationService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -119,5 +124,18 @@ public class NotificationService extends Service{
 //        builder.setCustomBigContentView(remoteViews);
         Notification notification = builder.build();
         manager.notify(C.NOTIFICATION_ID,notification);
+    }
+
+    @Subscribe
+    public void updateFormEvent(UpdateNotificationEvent event){
+        DebugUtil.debug("收到EventBus的更新通知了");
+        CaiRealTimeBean realTimeBean = event.getRealTimeBean();
+        updateNotification(realTimeBean);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

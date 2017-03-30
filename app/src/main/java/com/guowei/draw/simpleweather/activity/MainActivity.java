@@ -51,6 +51,9 @@ import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.bean.YoudaoBean;
 import com.guowei.draw.simpleweather.evens.StartLocalEvent;
 import com.guowei.draw.simpleweather.evens.StopLocalEvent;
+import com.guowei.draw.simpleweather.evens.UpdateNotificationEvent;
+import com.guowei.draw.simpleweather.evens.UpdateTempEvent;
+import com.guowei.draw.simpleweather.evens.UpdateWidgetEvent;
 import com.guowei.draw.simpleweather.fragment.WeatherFragment;
 import com.guowei.draw.simpleweather.notification.NotificationService;
 import com.guowei.draw.simpleweather.utils.AdsDialogUtil;
@@ -350,6 +353,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLocationClient.stop();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateTemp(UpdateTempEvent event){
+        DebugUtil.debug("收到温度指示改变Event");
+        swipeRefreshListener.onRefresh();
+    }
+
     private void startLocation() {
         //开始获取位置
         runOnUiThread(new Runnable() {
@@ -560,6 +569,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onNext(CaiRealTimeBean caiRealTimeBean) {
                 DebugUtil.debug("获取实时天气\n" + caiRealTimeBean.toString());
                 showToolbarData(caiRealTimeBean);
+                UpdateNotificationEvent updateNotificationEvent = new UpdateNotificationEvent();
+                updateNotificationEvent.setRealTimeBean(caiRealTimeBean);
+                EventBus.getDefault().post(updateNotificationEvent);
+                UpdateWidgetEvent updateWidgetEvent = new UpdateWidgetEvent();
+                updateWidgetEvent.setRealTimeBean(caiRealTimeBean);
+                EventBus.getDefault().post(updateWidgetEvent);
             }
 
         });

@@ -15,7 +15,11 @@ import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.WeatherApplication;
 import com.guowei.draw.simpleweather.activity.MainActivity;
+import com.guowei.draw.simpleweather.evens.UpdateWidgetEvent;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Timer;
@@ -87,15 +91,18 @@ public class ClockService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
     }
 
     private void updateWeather() {
         DebugUtil.debug("发送更新天气广播");
-        sendBroadcast(new Intent(C.UPDATE_WEATHER));
+        Intent updateWeatherIntent = new Intent(C.UPDATE_WEATHER);
+        updateWeatherIntent.putExtra(C.UPDATE_WEATHER_FORM,C.UPDATE_WEATHER_FORM_INTERNET);
+        sendBroadcast(updateWeatherIntent);
     }
 
     /**
-     * 给 API >= 18 的平台上用灰色保活手段
+     * 给 API >= 18 的平台上用灰色保活手段,暂时不使用
      */
     public static class GrayInnerService extends Service {
 
@@ -127,6 +134,15 @@ public class ClockService extends Service {
 //        new DrawUtils().updateClock();
     }
 
+    @Subscribe
+    public void updateWeatherFormActivity(UpdateWidgetEvent event){
+        DebugUtil.debug("发送更新天气广播");
+        Intent updateWeatherIntent = new Intent(C.UPDATE_WEATHER);
+        updateWeatherIntent.putExtra(C.UPDATE_WEATHER_FORM,C.UPDATE_WEATHER_FORM_ACTIVITY);
+        updateWeatherIntent.putExtra(C.REALTIME_DATA,event.getRealTimeBean());
+        sendBroadcast(updateWeatherIntent);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -138,6 +154,7 @@ public class ClockService extends Service {
             weatherTimer.cancel();
             weatherTimer = null;
         }
+        EventBus.getDefault().unregister(this);
         DebugUtil.debug("stop ClockService");
     }
 }

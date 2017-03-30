@@ -1,9 +1,10 @@
 package com.guowei.draw.simpleweather.bean;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CaiRealTimeBean {
+public class CaiRealTimeBean implements Serializable{
 
     /**
      * status : ok

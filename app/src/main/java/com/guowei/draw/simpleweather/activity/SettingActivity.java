@@ -11,9 +11,12 @@ import android.widget.Spinner;
 
 import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
+import com.guowei.draw.simpleweather.evens.UpdateTempEvent;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.SpUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +24,8 @@ import butterknife.ButterKnife;
 public class SettingActivity extends AppCompatActivity {
     @BindView(R.id.degree_spinner)
     Spinner degreeSpinner;
+    private int degreeIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +34,11 @@ public class SettingActivity extends AppCompatActivity {
         ActionBar supportActionBar = getSupportActionBar();
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         String degreeString = SpUtil.getString(C.SP_NAME, C.DEGREE, C.Centigrade);
-        int degreeIndex=0;
+        degreeIndex = 0;
         if (degreeString.equals("℃")){
-            degreeIndex=0;
+            degreeIndex =0;
         }else if(degreeString.equals("℉")){
-            degreeIndex=1;
+            degreeIndex =1;
         }
         degreeSpinner.setSelection(degreeIndex);
         degreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -64,5 +69,14 @@ public class SettingActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        int selectedItemPosition = degreeSpinner.getSelectedItemPosition();
+        if (selectedItemPosition!=degreeIndex){
+            EventBus.getDefault().post(new UpdateTempEvent());
+        }
+        super.onDestroy();
     }
 }
