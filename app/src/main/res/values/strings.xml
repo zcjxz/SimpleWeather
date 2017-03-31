@@ -71,5 +71,9 @@
     <string name="btn_more">MORE</string>
     <string name="is_exit">Is Exit ?</string>
     <string name="company_name">GUO_WEI</string>
+    <string name="official_website">Official website</string>
+    <string name="official_email">Official email</string>
+    <string name="website">http://www.guoweiad.com</string>
+    <string name="email">nationalpride@163.com</string>
 
 </resources>

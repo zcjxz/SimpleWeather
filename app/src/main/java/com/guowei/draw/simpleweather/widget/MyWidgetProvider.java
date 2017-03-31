@@ -86,8 +86,6 @@ public class MyWidgetProvider extends AppWidgetProvider {
             drawUtils = null;
         } else if (action.equals(C.UPDATE_WEATHER)) {
             String updateForm = intent.getStringExtra(C.UPDATE_WEATHER_FORM);
-
-
                 DebugUtil.debug("收到更新天气广播");
                 WeatherUtil weatherUtil = new WeatherUtil();
             if (updateForm.equals(C.UPDATE_WEATHER_FORM_INTERNET)) {
