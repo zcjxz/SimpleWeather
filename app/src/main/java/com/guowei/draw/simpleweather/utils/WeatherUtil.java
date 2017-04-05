@@ -1,20 +1,13 @@
 package com.guowei.draw.simpleweather.utils;
 
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.widget.RemoteViews;
 
 import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.WeatherApplication;
-import com.guowei.draw.simpleweather.activity.MainActivity;
-import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.widget.MyWidgetProvider;
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -65,9 +64,9 @@ public class AdsDialogUtil {
     public static void setBannerAds(AdView adView){
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
-                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
-                .addTestDevice("00324B61CF9CF3A064D03C379CA05E5F")//联想测试码
+//                .addTestDevice("73957908AF204D3C3BD6DD4DA2BD36F4")//红米4测试码
+//                .addTestDevice("46E4E6B0DD6C71F38DC6F64A53BEAC0D")//华为测试码
+//                .addTestDevice("00324B61CF9CF3A064D03C379CA05E5F")//联想测试码
                 .build();
         adView.loadAd(adRequest);
     }

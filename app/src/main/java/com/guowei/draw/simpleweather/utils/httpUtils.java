@@ -10,8 +10,6 @@ import com.guowei.draw.simpleweather.http.CaiyunServer;
 import com.guowei.draw.simpleweather.http.HeFengServer;
 import com.guowei.draw.simpleweather.http.YoudaoServer;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,7 +17,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 public class HttpUtils {

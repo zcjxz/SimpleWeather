@@ -2,7 +2,6 @@ package com.guowei.draw.simpleweather.utils;
 
 import android.widget.TextView;
 
-import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.bean.YoudaoBean;
 
 import rx.functions.Action1;

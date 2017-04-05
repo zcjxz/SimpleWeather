@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.adapter.DailyAdapter;
@@ -22,7 +21,6 @@ import com.guowei.draw.simpleweather.base.BaseFragment;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.bean.HefengSearchBean;
 import com.guowei.draw.simpleweather.bean.HefengSuggestionBean;
-import com.guowei.draw.simpleweather.bean.YoudaoBean;
 import com.guowei.draw.simpleweather.utils.AdsDialogUtil;
 import com.guowei.draw.simpleweather.utils.DebugUtil;
 import com.guowei.draw.simpleweather.utils.HttpUtils;
@@ -37,7 +35,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
-import rx.functions.Action1;
 
 
 public class WeatherFragment extends BaseFragment{
@@ -228,7 +225,7 @@ public class WeatherFragment extends BaseFragment{
             comfort.setText(ResourcesUtil.getString(R.string.comfortable) + "   " + suggestions.getComf().getBrf());
             comfortText.setText(suggestions.getComf().getTxt());
             clothing.setText(ResourcesUtil.getString(R.string.clothing) + "   " + suggestions.getDrsg().getBrf());
-            clothingText.setText(suggestions.getComf().getTxt());
+            clothingText.setText(suggestions.getDrsg().getTxt());
             ultraviolet.setText(ResourcesUtil.getString(R.string.ultraviolet_rays) + "   " + suggestions.getUv().getBrf());
             ultravioletText.setText(suggestions.getUv().getTxt());
             sports.setText(ResourcesUtil.getString(R.string.sports) + "   " + suggestions.getSport().getBrf());

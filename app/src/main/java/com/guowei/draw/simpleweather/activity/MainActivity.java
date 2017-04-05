@@ -1,7 +1,6 @@
 package com.guowei.draw.simpleweather.activity;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -17,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -30,7 +28,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -42,11 +39,8 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
-import com.guowei.draw.simpleweather.adapter.WeatherPagerAdapter;
 import com.guowei.draw.simpleweather.bean.CaiRealTimeBean;
 import com.guowei.draw.simpleweather.bean.YoudaoBean;
 import com.guowei.draw.simpleweather.evens.StartLocalEvent;
@@ -69,7 +63,6 @@ import com.guowei.draw.simpleweather.utils.SpUtil;
 import com.guowei.draw.simpleweather.utils.TransformUtils;
 import com.guowei.draw.simpleweather.widget.ClockService;
 import com.guowei.guowei_general.ADSystem.MoreActivity;
-import com.guowei.guowei_general.ADSystem.MyDialog;
 import com.guowei.guowei_general.ADSystem.XMLUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -562,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onError(Throwable e) {
-                DebugUtil.debug("获取实时天气错误： " + e.toString());
+                DebugUtil.debug("zcj_http","获取实时天气错误： " + e.toString());
             }
 
             @Override

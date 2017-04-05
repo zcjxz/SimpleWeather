@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.evens.UpdateTempEvent;
-import com.guowei.draw.simpleweather.utils.DebugUtil;
-import com.guowei.draw.simpleweather.utils.ResourcesUtil;
 import com.guowei.draw.simpleweather.utils.SpUtil;
 
 import org.greenrobot.eventbus.EventBus;

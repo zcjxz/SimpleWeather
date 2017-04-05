@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class DebugUtil {
     public static final String TAG = "zcj";
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static void toast(Context context, String content) {
         if (DEBUG){

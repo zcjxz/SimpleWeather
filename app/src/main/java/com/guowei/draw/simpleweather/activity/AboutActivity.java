@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -15,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.utils.AdsDialogUtil;

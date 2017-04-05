@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.guowei.draw.simpleweather.C;
 import com.guowei.draw.simpleweather.R;
 import com.guowei.draw.simpleweather.bean.CaiForecastBean;
 import com.guowei.draw.simpleweather.utils.ResourcesUtil;
